@@ -42,6 +42,11 @@ int RPN::multiply(int a, int b)
 
 int RPN::devide(int a, int b)
 {
+	if (b == 0)
+	{
+		std::cout << "Error" << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
 	return a / b;
 }
 

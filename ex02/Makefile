@@ -45,14 +45,12 @@ test: debug test_success test_fail
 
 test_success:
 	@echo "\n\033[32;1;3mRegular tests: \033[m"
-	@echo "To continue, hit the [Enter] key"
-	-@read _
 	@echo "\n\033[33;42m[TEST1]\033[m"
 	-./$(NAME) 42
 	@echo "\n\033[33;42m[TEST2]\033[m"
 	-./$(NAME) 225 12 3232 34348 1221
 	@echo "\n\033[33;42m[TEST3]\033[m"
-	-./$(NAME) 125 32 43343 1212
+	-./$(NAME) 125 32 43343 1212 1 1 1
 	@echo "\n\033[33;42m[TEST4]\033[m"
 	-./$(NAME) 12 3232 121526 237 346 126 43738 1267 432379 5865 3473 23627 43 444
 	@echo "\n\033[33;42m[TEST5]\033[m"
@@ -75,6 +73,8 @@ test_success:
     fi
 test_fail:
 	@echo "\n\033[31;1;3mError handling tests\033[m"
+	@echo "To continue, hit the [Enter] key"
+	-@read _
 	@echo "\033[41mError case: No arguments\033[m"
 	-./$(NAME)
 	@echo "\033[41mError case: Empty string\033[m"
