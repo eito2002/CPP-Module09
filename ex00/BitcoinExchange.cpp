@@ -1629,17 +1629,17 @@ void BitcoinExchange::calculateLine(const std::string& line)
 	float value = std::atof(line.substr(pos + 2).c_str());
 	if (pos == std::string::npos)
 	{
-		std::cerr << "Error: bad input" << " => " << date << std::endl;
+		std::cout << "Error: bad input" << " => " << date << std::endl;
 		return ;
 	}
 	else if (value < 0)
 	{
-		std::cerr << "Error: not a positive number." << std::endl;
+		std::cout << "Error: not a positive number." << std::endl;
 		return ;
 	}
 	else if (value > 1000)
 	{
-		std::cerr << "Error: too large a number." << std::endl;
+		std::cout << "Error: too large a number." << std::endl;
 		return ;
 	}
 	for (std::map<std::string, float>::iterator it = this->data_->begin(); \
