@@ -1,0 +1,11 @@
+# config
+.vscode
+
+# objects
+*.o
+
+# data
+*.d
+
+# executables
+btc
