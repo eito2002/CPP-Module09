@@ -2,9 +2,14 @@
 
 int main(int argc, char* argv[])
 {
+	if (argc < 2)
+	{
+		std::cout << "Error" << std::endl;
+		return 1;
+	}
 	for (int i = 1; i < argc; i++)
 	{
-		if (std::atoi(argv[i]) < 0)
+		if (std::atoi(argv[i]) < 0 || !std::strcmp(argv[i], ""))
 		{
 			std::cout << "Error" << std::endl;
 			return 1;

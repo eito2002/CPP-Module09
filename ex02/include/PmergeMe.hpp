@@ -7,8 +7,6 @@
 # include <iostream>
 # include <sstream>
 
-# define INSERTION_THRESHOLD 10
-
 class PmergeMe
 {
 private:
@@ -40,6 +38,8 @@ public:
 				std::deque<int>::iterator mid, std::deque<int>::iterator right);
 	void mergeSortDeque(std::deque<int>::iterator left, std::deque<int>::iterator right);
 	void mergeSortDeque(int argc, char* argv[]);
+
+	static const int INSERTION_THRESHOLD = 10;
 };
 
 #endif
