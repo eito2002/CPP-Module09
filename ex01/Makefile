@@ -13,7 +13,7 @@ RM				= rm
 
 CXXFLAGS		= -Wall -Wextra -Werror -std=c++98 -MMD -MP
 INCLUDES		= -I$(INCDIR)
-RMFLAGS			= -r
+RMFLAGS			= -rf
 DEBUGCFLAGS		= -g -ggdb -fsanitize=address -fno-omit-frame-pointer
 ifneq ($(OS), Darwin)
 	DEBUGCFLAGS	+= -fstack-usage
