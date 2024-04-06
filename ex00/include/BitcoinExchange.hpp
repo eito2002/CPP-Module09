@@ -4,6 +4,8 @@
 # include <map>
 # include <iostream>
 # include <limits>
+# include <algorithm>
+# include <sstream>
 
 class BitcoinExchange
 {
@@ -17,6 +19,9 @@ public:
 	~BitcoinExchange();
 
 	void calculateLine(const std::string& line);
+	bool checkError(std::string date, std::string value_str, size_t pos);
+	bool isValidDate(const std::string& date);
+	bool isValidValue(const std::string& value);
 };
 
 #endif
