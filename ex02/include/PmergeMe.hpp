@@ -23,9 +23,7 @@ public:
 	PmergeMe& operator=(const PmergeMe& other);
 	~PmergeMe();
 
-	bool checkSorted(const std::vector<int>& vec, const std::deque<int>& deq);
 	void printResult(int argc, char* argv[]);
-	void sort(int argc, char* argv[]);
 	bool checkSorted();
 
 	void insertionSortVector();
