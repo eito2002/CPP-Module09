@@ -100,9 +100,7 @@ void PmergeMe::mergeSortDeque(std::deque<int>::iterator left, \
 		insertionSortDeque();
 	else
 	{
-		std::deque<int>::iterator mid = left;
-		for (size_t i = 0; i < size / 2; i++)
-			mid++;
+		std::deque<int>::iterator mid = left + size / 2;
 		mergeSortDeque(left, mid);
 		mergeSortDeque(mid, right);
 	}
