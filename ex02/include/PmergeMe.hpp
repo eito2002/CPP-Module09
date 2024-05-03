@@ -2,7 +2,7 @@
 # define PMERGE_ME_HPP
 
 # include <vector>
-# include <deque>
+# include <list>
 # include <algorithm>
 # include <iostream>
 # include <sstream>
@@ -12,11 +12,11 @@ class PmergeMe
 {
 private:
 	std::vector<int> vector_;
-	std::deque<int> deque_;
+	std::list<int> list_;
 	clock_t startTimeVec_;
-	clock_t startTimeDeq_;
+	clock_t startTimeLis_;
 	double durationVec_;
-	double durationDeq_;
+	double durationLis_;
 
 public:
 	PmergeMe();
@@ -31,9 +31,9 @@ public:
 	void mergeSortVector(size_t left, size_t right);
 	void mergeSortVector(int argc, char* argv[]);
 
-	void insertionSortDeque();
-	void mergeSortDeque(std::deque<int>::iterator left, std::deque<int>::iterator right);
-	void mergeSortDeque(int argc, char* argv[]);
+	void insertionSortList();
+	void mergeSortList(std::list<int>::iterator left, std::list<int>::iterator right);
+	void mergeSortList(int argc, char* argv[]);
 
 	static const int INSERTION_THRESHOLD = 10;
 };

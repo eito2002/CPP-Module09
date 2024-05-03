@@ -10,7 +10,7 @@ void PmergeMe::printResult(int argc, char* argv[])
 		std::cout << argv[i] << " ";
 	std::cout << std::endl;
 	mergeSortVector(argc, argv);
-	mergeSortDeque(argc, argv);
+	mergeSortList(argc, argv);
 	if (checkSorted())
 	{
 		std::cout << "After:  ";
@@ -19,8 +19,8 @@ void PmergeMe::printResult(int argc, char* argv[])
 		std::cout << std::endl;
 		std::cout << "Time to process a range of " << vector_.size() << " elements with std::vector : " << \
 					durationVec_ << " micro seconds" << std::endl;
-		std::cout << "Time to process a range of " << deque_.size() << " elements with std::deque : " << \
-					durationDeq_ << " micro seconds" << std::endl;
+		std::cout << "Time to process a range of " << list_.size() << " elemens with std::list : " << \
+					durationLis_ << " micro seconds" << std::endl;
 	}
 	else
 		std::cout << "Error: not sorted" << std::endl;
@@ -28,10 +28,11 @@ void PmergeMe::printResult(int argc, char* argv[])
 
 bool PmergeMe::checkSorted()
 {
-	if (vector_.size() != deque_.size())
+	if (vector_.size() != list_.size())
 		return false;
-	for (size_t i = 0; i < vector_.size(); i++)
-		if (vector_[i] != deque_[i])
+	std::list<int>::iterator it = list_.begin();
+	for (size_t i = 0; i < vector_.size(); i++, it++)
+		if (vector_[i] != *it)
 			return false;
 	return true;
 }
@@ -77,45 +78,50 @@ void PmergeMe::mergeSortVector(int argc, char* argv[])
 	this->durationVec_ = (double)(clock() - startTimeVec_) * 1000000 / CLOCKS_PER_SEC;
 }
 
-void PmergeMe::insertionSortDeque()
+void PmergeMe::insertionSortList()
 {
-	for (size_t i = 1; i < deque_.size(); i++)
+	for (std::list<int>::iterator it = ++list_.begin(); it != list_.end(); it++)
 	{
-		int key = deque_[i];
-		size_t j = i;
-		while (j > 0 && deque_[j - 1] > key)
+		int key = *it;
+		std::list<int>::iterator jt = it;
+		std::list<int>::iterator prev_jt = jt;
+		--prev_jt;
+		while (jt != list_.begin() && *prev_jt > key)
 		{
-			std::swap(deque_[j], deque_[j - 1]);
-			j--;
+			std::swap(*jt, *prev_jt);
+			jt--;
+			prev_jt--;
 		}
 	}
 }
 
-void PmergeMe::mergeSortDeque(std::deque<int>::iterator left, \
-									std::deque<int>::iterator right)
+void PmergeMe::mergeSortList(std::list<int>::iterator left, \
+									std::list<int>::iterator right)
 {
 	size_t size = std::distance(left, right);
 	if (size <= 1) return;
 	if (size <= INSERTION_THRESHOLD)
-		insertionSortDeque();
+		insertionSortList();
 	else
 	{
-		std::deque<int>::iterator mid = left + size / 2;
-		mergeSortDeque(left, mid);
-		mergeSortDeque(mid, right);
+		std::list<int>::iterator mid = left;
+		for (size_t i = 0; i < size / 2; i++)
+			mid++;
+		mergeSortList(left, mid);
+		mergeSortList(mid, right);
 	}
 }
 
-void PmergeMe::mergeSortDeque(int argc, char* argv[])
+void PmergeMe::mergeSortList(int argc, char* argv[])
 {
-	this->startTimeDeq_ = clock();
+	this->startTimeLis_ = clock();
 	for (int i = 1; i < argc; i++)
 	{
 		std::stringstream ss(argv[i]);
 		int num;
 		while (ss >> num)
-			deque_.push_back(num);
+			list_.push_back(num);
 	}
-	mergeSortDeque(deque_.begin(), deque_.end());
-	this->durationDeq_ = (double)(clock() - startTimeDeq_) * 1000000 / CLOCKS_PER_SEC;
+	mergeSortList(list_.begin(), list_.end());
+	this->durationLis_ = (double)(clock() - startTimeLis_) * 1000000 / CLOCKS_PER_SEC;
 }
