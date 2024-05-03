@@ -27,13 +27,10 @@ public:
 	bool checkSorted();
 
 	void insertionSortVector();
-	void mergeVector(size_t left, size_t mid, size_t right);
 	void mergeSortVector(size_t left, size_t right);
 	void mergeSortVector(int argc, char* argv[]);
 
 	void insertionSortDeque();
-	void mergeDeque(std::deque<int>::iterator left, \
-				std::deque<int>::iterator mid, std::deque<int>::iterator right);
 	void mergeSortDeque(std::deque<int>::iterator left, std::deque<int>::iterator right);
 	void mergeSortDeque(int argc, char* argv[]);
 

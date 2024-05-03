@@ -23,7 +23,7 @@ void PmergeMe::printResult(int argc, char* argv[])
 					durationDeq_ << " milli seconds" << std::endl;
 	}
 	else
-		std::cout << "Error: not sorted";
+		std::cout << "Error: not sorted" << std::endl;
 }
 
 bool PmergeMe::checkSorted()
@@ -50,23 +50,6 @@ void PmergeMe::insertionSortVector()
 	}
 }
 
-void PmergeMe::mergeVector(size_t left, size_t mid, size_t right)
-{
-	std::vector<int> temp;
-	size_t i = left, j = mid + 1;
-	while (i <= mid && j <= right)
-	{
-		if (vector_[i] < vector_[j])
-			temp.push_back(vector_[i++]);
-		else
-			temp.push_back(vector_[j++]);
-	}
-	while (i <= mid) temp.push_back(vector_[i++]);
-	while (j <= right) temp.push_back(vector_[j++]);
-	for (size_t k = 0; k < temp.size(); ++k)
-		vector_[left + k] = temp[k];
-}
-
 void PmergeMe::mergeSortVector(size_t left, size_t right)
 {
 	if (left >= right) return;
@@ -77,7 +60,6 @@ void PmergeMe::mergeSortVector(size_t left, size_t right)
 		size_t mid = left + (right - left) / 2;
 		mergeSortVector(left, mid);
 		mergeSortVector(mid + 1, right);
-		mergeVector(left, mid, right);
 	}
 }
 
@@ -109,24 +91,6 @@ void PmergeMe::insertionSortDeque()
 	}
 }
 
-void PmergeMe::mergeDeque(std::deque<int>::iterator left, \
-			std::deque<int>::iterator mid, std::deque<int>::iterator right)
-{
-	(void)deque_;
-	std::deque<int> temp;
-	std::deque<int>::iterator i = left, j = mid;
-	while (i != mid && j != right)
-	{
-		if (*i < *j)
-			temp.push_back(*(i++));
-		else
-			temp.push_back(*(j++));
-	}
-	while (i != mid) temp.push_back(*(i++));
-	while (j != right) temp.push_back(*(j++));
-	std::copy(temp.begin(), temp.end(), left);
-}
-
 void PmergeMe::mergeSortDeque(std::deque<int>::iterator left, \
 									std::deque<int>::iterator right)
 {
@@ -137,10 +101,10 @@ void PmergeMe::mergeSortDeque(std::deque<int>::iterator left, \
 	else
 	{
 		std::deque<int>::iterator mid = left;
-		std::advance(mid, size / 2);
+		for (size_t i = 0; i < size / 2; i++)
+			mid++;
 		mergeSortDeque(left, mid);
 		mergeSortDeque(mid, right);
-		mergeDeque(left, mid, right);
 	}
 }
 
