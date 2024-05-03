@@ -18,9 +18,9 @@ void PmergeMe::printResult(int argc, char* argv[])
 			std::cout << *it << " ";
 		std::cout << std::endl;
 		std::cout << "Time to process a range of " << vector_.size() << " elements with std::vector : " << \
-					durationVec_ << " milli seconds" << std::endl;
+					durationVec_ << " micro seconds" << std::endl;
 		std::cout << "Time to process a range of " << deque_.size() << " elements with std::deque : " << \
-					durationDeq_ << " milli seconds" << std::endl;
+					durationDeq_ << " micro seconds" << std::endl;
 	}
 	else
 		std::cout << "Error: not sorted" << std::endl;
@@ -74,7 +74,7 @@ void PmergeMe::mergeSortVector(int argc, char* argv[])
 			vector_.push_back(num);
 	}
 	mergeSortVector(0, this->vector_.size() - 1);
-	this->durationVec_ = (double)(clock() - startTimeVec_);
+	this->durationVec_ = (double)(clock() - startTimeVec_) * 1000000 / CLOCKS_PER_SEC;
 }
 
 void PmergeMe::insertionSortDeque()
@@ -119,5 +119,5 @@ void PmergeMe::mergeSortDeque(int argc, char* argv[])
 			deque_.push_back(num);
 	}
 	mergeSortDeque(deque_.begin(), deque_.end());
-	this->durationDeq_ = (double)(clock() - startTimeDeq_);
+	this->durationDeq_ = (double)(clock() - startTimeDeq_) * 1000000 / CLOCKS_PER_SEC;
 }
