@@ -1,6 +1,7 @@
 # ********************** Section for Macros (Variables) ********************** #
 NAME			= PmergeMe
 SRC				= main.cpp PmergeMe.cpp
+RESULT			= result
 
 OS				= $(shell uname)
 
@@ -20,7 +21,7 @@ ifneq ($(OS), Darwin)
 endif
 DEBUGLDFLAGS	= -fsanitize=address
 
-ifeq ($(MAKECMDGOALS), debug)
+ifneq ($(filter debug test, $(MAKECMDGOALS)), )
 	CXXFLAGS	+= $(DEBUGCFLAGS)
 	LDFLAGS		+= $(DEBUGLDFLAGS)
 	DEF			+= -D DEBUG_MODE=1
@@ -37,7 +38,7 @@ all: $(NAME)
 clean:
 	-$(RM) $(RMFLAGS) $(OBJDIR)
 fclean: clean
-	-$(RM) $(RMFLAGS) $(NAME)
+	-$(RM) $(RMFLAGS) $(NAME) $(RESULT)
 re: fclean all
 
 debug: fclean all
@@ -56,7 +57,7 @@ test_success:
 	@echo "\n\033[33;42m[TEST5]\033[m"
 	-./$(NAME) 896 495 449 694 863 366 164 86 543 584 541 447 599 6 326 398 637 997 199 788 66 49 596 715 809 411 699 872 979 695
 	@echo "\n\033[33;42m[TEST6]\033[m"
-	-./$(NAME) `jot -r 3000 1 100000 | tr '\n' ' '` > result
+	-./$(NAME) `jot -r 3000 1 100000 | tr '\n' ' '` > $(RESULT)
 	@echo "\n\033[33;42m[RANDOM TEST1]\033[m"
 	-./$(NAME) `jot -r 6000 1 100000 | tr '\n' ' '` | awk '/After:/ { for(i=2;i<=NF;i++) print $i }' | sort -n -c
 	@if [ $$? -eq 0 ]; then \
@@ -71,6 +72,7 @@ test_success:
     else \
         echo "Failure"; \
     fi
+	@echo "\033[2;3mRegular tests finished\033[m"
 test_fail:
 	@echo "\n\033[31;1;3mError handling tests\033[m"
 	@echo "To continue, hit the [Enter] key"

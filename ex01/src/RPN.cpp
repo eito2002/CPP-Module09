@@ -12,7 +12,7 @@ void RPN::pushNumbers(std::string line)
 		if (token.length() >= 2)
 		{
 			std::cout << "Error" << std::endl;
-			return;
+			std::exit(EXIT_FAILURE);
 		}
 		else if (std::isdigit(token[0]))
 			stack_.push(token);
@@ -22,7 +22,10 @@ void RPN::pushNumbers(std::string line)
 	if (stack_.size() == 1)
 		std::cout << stack_.top() << std::endl;
 	else
+	{
 		std::cout << "Error" << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
 }
 
 int RPN::add(int a, int b)

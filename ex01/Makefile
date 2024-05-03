@@ -20,7 +20,7 @@ ifneq ($(OS), Darwin)
 endif
 DEBUGLDFLAGS	= -fsanitize=address
 
-ifeq ($(MAKECMDGOALS), debug)
+ifneq ($(filter debug test, $(MAKECMDGOALS)), )
 	CXXFLAGS	+= $(DEBUGCFLAGS)
 	LDFLAGS		+= $(DEBUGLDFLAGS)
 	DEF			+= -D DEBUG_MODE=1
@@ -46,7 +46,7 @@ test: debug test_success test_fail
 test_success:
 	@echo "\n\033[32;1;3mRegular tests: \033[m"
 	@echo "\n\033[33;42m[TEST1]\033[m"
-	-./$(NAME) "42"
+	-./$(NAME) "2"
 	@echo "\n\033[33;42m[TEST2]\033[m"
 	-./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
 	@echo "\n\033[33;42m[TEST3]\033[m"
@@ -57,6 +57,7 @@ test_success:
 	-./$(NAME) "3 5 + 2 *"
 	@echo "\n\033[33;42m[TEST6]\033[m"
 	-./$(NAME) "4 2 3 + * 6 -"
+	@echo "\033[2;3mRegular tests finished\033[m"
 test_fail:
 	@echo "\n\033[31;1;3mError handling tests\033[m"
 	@echo "To continue, hit the [Enter] key"

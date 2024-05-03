@@ -1692,8 +1692,8 @@ void BitcoinExchange::calculateLine(const std::string& line)
 	{
 		std::map<std::string, float>::iterator next = it;
 		++next;
-		if ((it->first <= date && date < next->first) || \
-			(it->first == date && next == this->data_->end()))
+		if ((next != this->data_->end() && it->first <= date && date < next->first) || \
+			(it->first == date))
 			std::cout << date << " => " << value << " = " << value * it->second << std::endl;
 	}
 }
