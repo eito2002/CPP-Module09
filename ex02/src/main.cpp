@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
 	}
 	for (int i = 1; i < argc; i++)
 	{
-		if (std::atoi(argv[i]) < 0 || !std::strcmp(argv[i], ""))
+		if (std::atoi(argv[i]) <= 0 || !std::strcmp(argv[i], ""))
 		{
 			std::cout << "Error" << std::endl;
 			return 1;
