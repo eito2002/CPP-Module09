@@ -1,5 +1,5 @@
 [ex00]
-Heredocを>>の代わりに\n
+Heredocを>>の代わりに
 mapは*でなくても良い
 サイズ決まっている
 IsNumeric “”の時trueになってしまう
@@ -16,6 +16,7 @@ dir はopenできるできるけどreadできない
 lower-bound関数
 過去の存在しないものに対してもエラー
 if (date > key) break ;
+curlでdataをダウンロード
 
 [ex01]
 devide -> divde
