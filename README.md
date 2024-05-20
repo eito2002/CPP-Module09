@@ -1,5 +1,5 @@
 [ex00]
-Heredocを>>の代わりに
+Heredocを>>の代わりに\n
 mapは*でなくても良い
 サイズ決まっている
 IsNumeric “”の時trueになってしまう
