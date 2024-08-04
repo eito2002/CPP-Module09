@@ -22,20 +22,20 @@ void BitcoinExchange::ParseDataFile(const std::string &file_path) {
 	}
 }
 
-static bool strIsNumeric(const std::string &str) {
+static bool StrIsNumeric(const std::string &str) {
 	for (size_t i = 0; i < str.length(); ++i)
 		if (!std::isdigit(str[i]))
 			return false;
 	return true;
 }
 
-bool BitcoinExchange::isValidDate(const std::string &date) {
+bool BitcoinExchange::IsValidDate(const std::string &date) {
 	std::stringstream ss(date);
 	std::string       year, month, day;
 	std::getline(ss, year, '-');
 	std::getline(ss, month, '-');
 	std::getline(ss, day, '-');
-	if (!strIsNumeric(year) || !strIsNumeric(month) || !strIsNumeric(day))
+	if (!StrIsNumeric(year) || !StrIsNumeric(month) || !StrIsNumeric(day))
 		return false;
 	int yearInt, monthInt, dayInt;
 	std::stringstream(year) >> yearInt;
@@ -46,7 +46,7 @@ bool BitcoinExchange::isValidDate(const std::string &date) {
 	return true;
 }
 
-bool BitcoinExchange::isValidValue(const std::string &value) {
+bool BitcoinExchange::IsValidValue(const std::string &value) {
 	std::stringstream ss(value);
 	float             floatValue;
 	char              remaining;
@@ -55,14 +55,14 @@ bool BitcoinExchange::isValidValue(const std::string &value) {
 	return true;
 }
 
-bool BitcoinExchange::checkError(std::string date, std::string value_str, size_t pos) {
+bool BitcoinExchange::CheckError(std::string date, std::string value_str, size_t pos) {
 	float value = std::atof(value_str.c_str());
-	if (pos == std::string::npos || !isValidDate(date)) {
+	if (pos == std::string::npos || !IsValidDate(date)) {
 		std::cout << "Error: bad input"
 				  << " => " << date << std::endl;
 		return false;
 	}
-	if (value <= 0 || value_str.find('|') != std::string::npos || !isValidValue(value_str)) {
+	if (value <= 0 || value_str.find('|') != std::string::npos || !IsValidValue(value_str)) {
 		std::cout << "Error: not a positive number." << std::endl;
 		return false;
 	} else if (value > 1000) {
@@ -72,12 +72,12 @@ bool BitcoinExchange::checkError(std::string date, std::string value_str, size_t
 	return true;
 }
 
-void BitcoinExchange::calculateLine(const std::string &line) {
+void BitcoinExchange::CalculateLine(const std::string &line) {
 	size_t      pos       = line.find_first_of('|');
 	std::string date      = line.substr(0, pos - 1);
 	std::string value_str = line.substr(pos + 2);
 	float       value     = std::atof(value_str.c_str());
-	if (!checkError(date, value_str, pos))
+	if (!CheckError(date, value_str, pos))
 		return;
 	for (std::map<std::string, float>::iterator it = this->data_.begin(); it != this->data_.end();
 		 it++) {

@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 	std::getline(file, line);
 	while (std::getline(file, line))
 		if (line != "")
-			bit.calculateLine(line);
+			bit.CalculateLine(line);
 	file.close();
 	return 0;
 }

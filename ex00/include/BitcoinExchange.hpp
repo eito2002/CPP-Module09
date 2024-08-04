@@ -20,14 +20,14 @@ class BitcoinExchange {
 	DISALLOW_COPY_AND_ASSIGN(BitcoinExchange);
 
 	void ParseDataFile(const std::string &);
-	bool checkError(std::string date, std::string value_str, size_t pos);
-	bool isValidDate(const std::string &date);
-	bool isValidValue(const std::string &value);
+	bool CheckError(std::string date, std::string value_str, size_t pos);
+	bool IsValidDate(const std::string &date);
+	bool IsValidValue(const std::string &value);
 
   public:
 	BitcoinExchange(const std::string &);
 	~BitcoinExchange();
-	void calculateLine(const std::string &line);
+	void CalculateLine(const std::string &line);
 };
 
 #endif
