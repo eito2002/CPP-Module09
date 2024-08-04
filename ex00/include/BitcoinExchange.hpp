@@ -1,11 +1,7 @@
 #ifndef BITCOIN_EXCHANGE_HPP
 #define BITCOIN_EXCHANGE_HPP
 
-#include <algorithm>
-#include <iostream>
-#include <limits>
 #include <map>
-#include <sstream>
 
 #define DISALLOW_COPY_AND_ASSIGN(TypeName)                                                         \
 	TypeName(const TypeName &);                                                                    \
