@@ -5,6 +5,12 @@
 
 namespace {
 
+#define YEAR_MIN  2009
+#define MONTH_MIN 1
+#define MONTH_MAX 12
+#define DAY_MIN   1
+#define DAY_MAX   31
+
 bool StrIsNumeric(const std::string &str) {
 	if (str.empty())
 		return false;
@@ -29,7 +35,8 @@ bool IsValidDate(const std::string &date) {
 	std::stringstream(year) >> year_int;
 	std::stringstream(month) >> month_int;
 	std::stringstream(day) >> day_int;
-	if (month_int > 12 || day_int < 1 || day_int > 31)
+	if (year_int < YEAR_MIN || month_int < MONTH_MIN || month_int > MONTH_MAX ||
+		day_int < DAY_MIN || day_int > DAY_MAX)
 		return false;
 	return true;
 }
