@@ -96,6 +96,11 @@ $(INPUT):
 	@echo "2013-03-2a | 1" >> input.txt
 	@echo "2012-01-02 | a" >> input.txt
 	@echo "2014-33-03 | 1" >> input.txt
+	@echo "-1-1 | 1" >> input.txt
+	@echo "1-1-1 | inf" >> input.txt
+	@echo "9999-02-31 | 1" >> input.txt
+	@echo "20000-01-01 | 1" >> input.txt
+	@echo "420-01-01 | 1" >> input.txt
 
 -include $(DEPS)
 
