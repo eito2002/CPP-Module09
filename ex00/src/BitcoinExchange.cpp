@@ -41,7 +41,7 @@ bool IsValidValue(const std::string &value) {
 	return true;
 }
 
-bool CheckError(std::string date, std::string value_str, size_t pos) {
+bool CheckError(const std::string &date, const std::string &value_str, size_t pos) {
 	float value = std::atof(value_str.c_str());
 	if (pos == std::string::npos || !IsValidDate(date)) {
 		std::cout << "Error: bad input"
