@@ -1,8 +1,26 @@
 #include "BitcoinExchange.hpp"
+#include <fstream>
 
-BitcoinExchange::BitcoinExchange() {}
+BitcoinExchange::BitcoinExchange(const std::string &file_path) {
+	ParseDataFile(file_path);
+}
 
 BitcoinExchange::~BitcoinExchange() {}
+
+void BitcoinExchange::ParseDataFile(const std::string &file_path) {
+	std::ifstream ifs(file_path.c_str());
+	if (!ifs.is_open()) {
+		throw std::runtime_error("cannot open file");
+	}
+	std::string line;
+	std::getline(ifs, line); // skip the first line
+	while (std::getline(ifs, line)) {
+		size_t delim_pos = line.find('-');
+		std::string date = line.substr(0, delim_pos);
+		float value = std::atof(line.substr(delim_pos).c_str());
+		data_[date] = value;
+	}
+}
 
 static bool strIsNumeric(const std::string& str)
 {

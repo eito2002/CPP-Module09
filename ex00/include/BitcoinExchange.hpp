@@ -7,6 +7,10 @@
 # include <algorithm>
 # include <sstream>
 
+#define DISALLOW_COPY_AND_ASSIGN(TypeName) \
+TypeName(const TypeName&); \
+void operator=(const TypeName&)
+
 class BitcoinExchange
 {
 typedef std::map<std::string, float> BTCDataMap;
@@ -14,16 +18,17 @@ typedef std::map<std::string, float> BTCDataMap;
 private:
 	BTCDataMap data_;
 
-public:
-	BitcoinExchange();
-	BitcoinExchange(const BitcoinExchange& other);
-	BitcoinExchange& operator=(const BitcoinExchange& other);
-	~BitcoinExchange();
+	DISALLOW_COPY_AND_ASSIGN(BitcoinExchange);
 
-	void calculateLine(const std::string& line);
+	void ParseDataFile(const std::string &);
 	bool checkError(std::string date, std::string value_str, size_t pos);
 	bool isValidDate(const std::string& date);
 	bool isValidValue(const std::string& value);
+
+public:
+	BitcoinExchange(const std::string &);
+	~BitcoinExchange();
+	void calculateLine(const std::string& line);
 };
 
 #endif
