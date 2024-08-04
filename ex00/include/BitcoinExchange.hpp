@@ -16,13 +16,8 @@ class BitcoinExchange {
 
   private:
 	BTCDataMap data_;
-
 	DISALLOW_COPY_AND_ASSIGN(BitcoinExchange);
-
 	void ParseDataFile(const std::string &);
-	bool CheckError(std::string date, std::string value_str, size_t pos);
-	bool IsValidDate(const std::string &date);
-	bool IsValidValue(const std::string &value);
 
   public:
 	BitcoinExchange(const std::string &);

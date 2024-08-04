@@ -1,28 +1,9 @@
 #include "BitcoinExchange.hpp"
 #include <fstream>
 
-BitcoinExchange::BitcoinExchange(const std::string &file_path) {
-	ParseDataFile(file_path);
-}
+namespace {
 
-BitcoinExchange::~BitcoinExchange() {}
-
-void BitcoinExchange::ParseDataFile(const std::string &file_path) {
-	std::ifstream ifs(file_path.c_str());
-	if (!ifs.is_open()) {
-		throw std::runtime_error("cannot open file");
-	}
-	std::string line;
-	std::getline(ifs, line); // skip the first line
-	while (std::getline(ifs, line)) {
-		size_t      delim_pos = line.find(',');
-		std::string date      = line.substr(0, delim_pos);
-		float       value     = std::atof(line.substr(delim_pos + 1).c_str());
-		data_[date]           = value;
-	}
-}
-
-static bool StrIsNumeric(const std::string &str) {
+bool StrIsNumeric(const std::string &str) {
 	if (str.empty())
 		return false;
 	for (std::string::const_iterator it = str.begin(); it != str.end(); ++it)
@@ -31,7 +12,7 @@ static bool StrIsNumeric(const std::string &str) {
 	return true;
 }
 
-bool BitcoinExchange::IsValidDate(const std::string &date) {
+bool IsValidDate(const std::string &date) {
 	std::stringstream ss(date);
 	std::string       year, month, day;
 	std::getline(ss, year, '-');
@@ -51,7 +32,7 @@ bool BitcoinExchange::IsValidDate(const std::string &date) {
 	return true;
 }
 
-bool BitcoinExchange::IsValidValue(const std::string &value) {
+bool IsValidValue(const std::string &value) {
 	std::stringstream ss(value);
 	float             float_value;
 	char              remaining;
@@ -60,7 +41,7 @@ bool BitcoinExchange::IsValidValue(const std::string &value) {
 	return true;
 }
 
-bool BitcoinExchange::CheckError(std::string date, std::string value_str, size_t pos) {
+bool CheckError(std::string date, std::string value_str, size_t pos) {
 	float value = std::atof(value_str.c_str());
 	if (pos == std::string::npos || !IsValidDate(date)) {
 		std::cout << "Error: bad input"
@@ -75,6 +56,29 @@ bool BitcoinExchange::CheckError(std::string date, std::string value_str, size_t
 		return false;
 	}
 	return true;
+}
+
+} // namespace
+
+BitcoinExchange::BitcoinExchange(const std::string &file_path) {
+	ParseDataFile(file_path);
+}
+
+BitcoinExchange::~BitcoinExchange() {}
+
+void BitcoinExchange::ParseDataFile(const std::string &file_path) {
+	std::ifstream ifs(file_path.c_str());
+	if (!ifs.is_open()) {
+		throw std::runtime_error("cannot open file");
+	}
+	std::string line;
+	std::getline(ifs, line); // skip the first line
+	while (std::getline(ifs, line)) {
+		size_t      delim_pos = line.find(',');
+		std::string date      = line.substr(0, delim_pos);
+		float       value     = std::atof(line.substr(delim_pos + 1).c_str());
+		data_[date]           = value;
+	}
 }
 
 void BitcoinExchange::CalculateLine(const std::string &line) {
