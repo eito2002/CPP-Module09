@@ -18,7 +18,7 @@ class BitcoinExchange {
   public:
 	BitcoinExchange(const std::string &);
 	~BitcoinExchange();
-	void CalculateLine(const std::string &line);
+	void CalculateLine(const std::string &);
 };
 
 #endif
