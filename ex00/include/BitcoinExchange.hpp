@@ -9,8 +9,10 @@
 
 class BitcoinExchange
 {
+typedef std::map<std::string, float> BTCDataMap;
+
 private:
-	std::map<std::string, float>* data_;
+	BTCDataMap data_;
 
 public:
 	BitcoinExchange();
