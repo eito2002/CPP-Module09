@@ -15,9 +15,9 @@ void BitcoinExchange::ParseDataFile(const std::string &file_path) {
 	std::string line;
 	std::getline(ifs, line); // skip the first line
 	while (std::getline(ifs, line)) {
-		size_t      delim_pos = line.find('-');
+		size_t      delim_pos = line.find(',');
 		std::string date      = line.substr(0, delim_pos);
-		float       value     = std::atof(line.substr(delim_pos).c_str());
+		float       value     = std::atof(line.substr(delim_pos + 1).c_str());
 		data_[date]           = value;
 	}
 }
@@ -77,14 +77,12 @@ void BitcoinExchange::CalculateLine(const std::string &line) {
 	std::string date      = line.substr(0, pos - 1);
 	std::string value_str = line.substr(pos + 2);
 	float       value     = std::atof(value_str.c_str());
+
 	if (!CheckError(date, value_str, pos))
 		return;
-	for (std::map<std::string, float>::iterator it = this->data_.begin(); it != this->data_.end();
-		 it++) {
-		std::map<std::string, float>::iterator next = it;
-		++next;
-		if ((next != this->data_.end() && it->first <= date && date < next->first) ||
-			(it->first == date))
-			std::cout << date << " => " << value << " = " << value * it->second << std::endl;
-	}
+	BTCDataMap::iterator it = data_.lower_bound(date);
+	if (it == data_.end())
+		std::cout << date << " => " << value << " = " << value * (*--it).second << std::endl;
+	else
+		std::cout << date << " => " << value << " = " << value * (*it).second << std::endl;
 }
