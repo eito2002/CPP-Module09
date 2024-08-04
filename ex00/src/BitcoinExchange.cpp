@@ -23,8 +23,10 @@ void BitcoinExchange::ParseDataFile(const std::string &file_path) {
 }
 
 static bool StrIsNumeric(const std::string &str) {
-	for (size_t i = 0; i < str.length(); ++i)
-		if (!std::isdigit(str[i]))
+	if (str.empty())
+		return false;
+	for (std::string::const_iterator it = str.begin(); it != str.end(); ++it)
+		if (!std::isdigit(*it))
 			return false;
 	return true;
 }
