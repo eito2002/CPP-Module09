@@ -37,22 +37,25 @@ bool BitcoinExchange::IsValidDate(const std::string &date) {
 	std::getline(ss, year, '-');
 	std::getline(ss, month, '-');
 	std::getline(ss, day, '-');
-	if (!StrIsNumeric(year) || !StrIsNumeric(month) || !StrIsNumeric(day))
+	if (year.length() != 4 || month.length() != 2 || day.length() != 2)
 		return false;
-	int yearInt, monthInt, dayInt;
-	std::stringstream(year) >> yearInt;
-	std::stringstream(month) >> monthInt;
-	std::stringstream(day) >> dayInt;
-	if (yearInt < 0 || monthInt < 1 || monthInt > 12 || dayInt < 1 || dayInt > 31)
+	else if (!StrIsNumeric(year) || !StrIsNumeric(month) || !StrIsNumeric(day))
+		return false;
+
+	int year_int, month_int, day_int;
+	std::stringstream(year) >> year_int;
+	std::stringstream(month) >> month_int;
+	std::stringstream(day) >> day_int;
+	if (month_int > 12 || day_int < 1 || day_int > 31)
 		return false;
 	return true;
 }
 
 bool BitcoinExchange::IsValidValue(const std::string &value) {
 	std::stringstream ss(value);
-	float             floatValue;
+	float             float_value;
 	char              remaining;
-	if (!(ss >> floatValue) || (ss >> remaining))
+	if (!(ss >> float_value) || (ss >> remaining))
 		return false;
 	return true;
 }
