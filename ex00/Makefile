@@ -1,6 +1,7 @@
 # ********************** Section for Macros (Variables) ********************** #
 NAME			= btc
 SRC				= main.cpp BitcoinExchange.cpp
+DB_FILE			= cpp_09/data.csv
 INPUT			= input.txt
 
 OS				= $(shell uname)
@@ -38,7 +39,7 @@ all: $(NAME)
 clean:
 	-$(RM) $(RMFLAGS) $(OBJDIR) $(INPUT)
 fclean: clean
-	-$(RM) $(RMFLAGS) $(NAME)
+	-$(RM) $(RMFLAGS) $(NAME) $(DB_FILE)
 re: fclean all
 
 debug: fclean all
@@ -61,8 +62,13 @@ test_fail:
 	-./$(NAME) input.txt test.txt
 	@echo "\033[2;3mError handling tests finished\033[m"
 
-$(NAME): $(OBJS)
+$(NAME): $(DB_FILE) $(OBJS)
 	$(CXX) $(LDFLAGS) $(OBJS) -o $(NAME)
+
+$(DB_FILE):
+	@curl -O https://cdn.intra.42.fr/document/document/25726/cpp_09.tgz
+	@tar -xzvf cpp_09.tgz
+	@rm -rf cpp_09.tgz
 
 $(OBJDIR):
 	@mkdir -p $@
