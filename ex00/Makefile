@@ -90,6 +90,7 @@ $(INPUT):
 	@echo "2022-03-29 | 1" >> input.txt
 	@echo "2025-01-01 | 1" >> input.txt
 	@echo "2009-01-03 | 1" >> input.txt
+	@echo "2009-01-01 | 1" >> input.txt
 	@echo "2002-01-02 | 1" >> input.txt
 	@echo "" >> input.txt
 	@echo "2022-03-29 | 1 | 1" >> input.txt
