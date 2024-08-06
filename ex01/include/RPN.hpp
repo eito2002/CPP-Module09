@@ -12,7 +12,7 @@ class RPN {
   private:
 	DISALLOW_COPY_AND_ASSIGN(RPN);
 	void                    Calculate(const std::string &);
-	std::stack<std::string> stack_;
+	std::stack<int> stack_;
 
   public:
 	RPN();
