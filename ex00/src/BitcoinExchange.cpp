@@ -38,7 +38,7 @@ bool IsValidDate(const std::string &date) {
 	if (year_int < YEAR_MIN || month_int < MONTH_MIN || month_int > MONTH_MAX ||
 		day_int < DAY_MIN || day_int > DAY_MAX)
 		return false;
-	else if (year_int == YEAR_MIN && month_int == MONTH_MIN && day_int == DAY_MIN)
+	else if (year_int == YEAR_MIN && month_int == MONTH_MIN && day_int == DAY_MIN) // for 2009-01-01
 		return false;
 	return true;
 }
