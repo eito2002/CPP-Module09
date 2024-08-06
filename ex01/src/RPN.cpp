@@ -15,8 +15,7 @@ void RPN::pushNumbers(const std::string &line) {
 	std::string       token;
 	while (iss >> token) {
 		if (token.length() >= 2) {
-			std::cout << "Error" << std::endl;
-			std::exit(EXIT_FAILURE);
+			throw std::runtime_error("Error");
 		} else if (std::isdigit(token[0]))
 			stack_.push(token);
 		else if (OP.find(token[0]) != std::string::npos && stack_.size() >= 2)
@@ -25,8 +24,7 @@ void RPN::pushNumbers(const std::string &line) {
 	if (stack_.size() == 1)
 		std::cout << stack_.top() << std::endl;
 	else {
-		std::cout << "Error" << std::endl;
-		std::exit(EXIT_FAILURE);
+		throw std::runtime_error("Error");
 	}
 }
 
