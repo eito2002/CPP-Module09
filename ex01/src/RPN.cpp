@@ -1,4 +1,6 @@
 #include "RPN.hpp"
+#include <iostream>
+#include <sstream>
 
 const std::string RPN::OP = "+-/*";
 
@@ -8,7 +10,7 @@ RPN::RPN(const std::string &line) {
 
 RPN::~RPN() {}
 
-void RPN::pushNumbers(std::string line) {
+void RPN::pushNumbers(const std::string &line) {
 	std::stringstream iss(line);
 	std::string       token;
 	while (iss >> token) {

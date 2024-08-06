@@ -1,28 +1,24 @@
 #ifndef RPN_HPP
 #define RPN_HPP
 
-#include <iostream>
-#include <sstream>
 #include <stack>
+#include <string>
+
+#define DISALLOW_COPY_AND_ASSIGN(TypeName)                                                         \
+	TypeName(const TypeName &);                                                                    \
+	void operator=(const TypeName &)
 
 class RPN {
   private:
 	RPN();
-	RPN(const RPN &other);
-	RPN &operator=(const RPN &other);
-
+	DISALLOW_COPY_AND_ASSIGN(RPN);
 	std::stack<std::string> stack_;
 
   public:
 	RPN(const std::string &);
 	~RPN();
-	// int add(int a, int b);
-	// int subtract(int a, int b);
-	// int multiply(int a, int b);
-	// int divide(int a, int b);
-
-	void pushNumbers(std::string line);
-	void calculate(const std::string &op);
+	void pushNumbers(const std::string &);
+	void calculate(const std::string &);
 
 	static const std::string OP;
 };
