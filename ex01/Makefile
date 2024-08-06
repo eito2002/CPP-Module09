@@ -76,6 +76,12 @@ test_fail:
 	-./$(NAME) "1 3 * 11 /"
 	@echo "\033[41mError case: Division by zero\033[m"
 	-./$(NAME) "1 9 + 0 /"
+	@echo "\033[41mError case: OverFlow 2^32\033[m"
+	-./$(NAME) "8 8 8 8 8 8 8 8 8 8 * * * * * * * * * * 2 *"
+	@echo "\033[41mError case: OverFlow INT_MIN - 1\033[m"
+	-./$(NAME) "1 2 - 8 8 8 8 8 8 8 8 8 8 * * * * * * * * * * 2 * 1 -"
+	@echo "\033[41mError case: OverFlow INT_MIN / -1\033[m"
+	-./$(NAME) "1 2 - 8 8 8 8 8 8 8 8 8 8 * * * * * * * * * * 2 * 1 2 - /"
 	@echo "\033[2;3mError handling tests finished\033[m"
 
 $(NAME): $(OBJS)

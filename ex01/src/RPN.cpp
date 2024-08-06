@@ -47,6 +47,34 @@ static int Divide(int a, int b) {
 	return a / b;
 }
 
+static void CheckOverFlow(int a, int b, char op) {
+	switch (op) {
+	case '+':
+		if ((b > 0 && a > std::numeric_limits<int>::max() - b) ||
+			(b < 0 && a < std::numeric_limits<int>::min() - b))
+			throw std::overflow_error("Error");
+		break;
+	case '-':
+		if ((b < 0 && a > std::numeric_limits<int>::max() + b) ||
+			(b > 0 && a < std::numeric_limits<int>::min() + b))
+			throw std::overflow_error("Error");
+		break;
+	case '*':
+		if ((a > 0 && b > 0 && a > std::numeric_limits<int>::max() / b) ||
+			(a > 0 && b < 0 && b < std::numeric_limits<int>::min() / a) ||
+			(a < 0 && b > 0 && a < std::numeric_limits<int>::min() / b) ||
+			(a < 0 && b < 0 && a < std::numeric_limits<int>::max() / b))
+			throw std::overflow_error("Error");
+		break;
+	case '/':
+		if (a == std::numeric_limits<int>::min() && b == -1)
+			throw std::overflow_error("Error");
+		break;
+	default:
+		break;
+	}
+}
+
 void RPN::Calculate(const std::string &op) {
 	int b = stack_.top();
 	stack_.pop();
@@ -56,6 +84,7 @@ void RPN::Calculate(const std::string &op) {
 	FuncPtr funcs[] = {&Add, &Subtract, &Divide, &Multiply};
 	for (int i = 0; i < 4; ++i) {
 		if (op[0] == OP[i]) {
+			CheckOverFlow(a, b, op[0]);
 			stack_.push((funcs[i])(a, b));
 		}
 	}

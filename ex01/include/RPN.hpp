@@ -11,7 +11,7 @@
 class RPN {
   private:
 	DISALLOW_COPY_AND_ASSIGN(RPN);
-	void                    Calculate(const std::string &);
+	void            Calculate(const std::string &);
 	std::stack<int> stack_;
 
   public:
