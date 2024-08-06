@@ -19,7 +19,7 @@ void RPN::pushNumbers(const std::string &line) {
 			std::exit(EXIT_FAILURE);
 		} else if (std::isdigit(token[0]))
 			stack_.push(token);
-		else if (std::strchr(RPN::OP.c_str(), token[0]) && stack_.size() >= 2)
+		else if (OP.find(token[0]) != std::string::npos && stack_.size() >= 2)
 			calculate(token);
 	}
 	if (stack_.size() == 1)
@@ -58,7 +58,7 @@ void RPN::calculate(const std::string &op) {
 	typedef int (*FuncPtr)(int, int);
 	FuncPtr funcs[] = {&add, &subtract, &divide, &multiply};
 	for (int i = 0; i < 4; ++i) {
-		if (op[0] == RPN::OP[i]) {
+		if (op[0] == OP[i]) {
 			std::stringstream ss;
 			ss << (funcs[i])(a, b);
 			stack_.push(ss.str());
