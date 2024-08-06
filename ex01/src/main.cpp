@@ -5,6 +5,6 @@ int main(int argc, char *argv[]) {
 		std::cout << "Error" << std::endl;
 		return 1;
 	}
-	RPN::pushNumbers(argv[1]);
+	RPN(std::string(argv[1]));
 	return 0;
 }

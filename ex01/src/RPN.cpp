@@ -1,7 +1,12 @@
 #include "RPN.hpp"
 
-std::stack<std::string> RPN::stack_;
-const std::string       RPN::OP = "+-/*";
+const std::string RPN::OP = "+-/*";
+
+RPN::RPN(const std::string &line) {
+	pushNumbers(line);
+}
+
+RPN::~RPN() {}
 
 void RPN::pushNumbers(std::string line) {
 	std::stringstream iss(line);
@@ -23,19 +28,19 @@ void RPN::pushNumbers(std::string line) {
 	}
 }
 
-int RPN::add(int a, int b) {
+int add(int a, int b) {
 	return a + b;
 }
 
-int RPN::subtract(int a, int b) {
+int subtract(int a, int b) {
 	return a - b;
 }
 
-int RPN::multiply(int a, int b) {
+int multiply(int a, int b) {
 	return a * b;
 }
 
-int RPN::divide(int a, int b) {
+int divide(int a, int b) {
 	if (b == 0) {
 		std::cout << "Error" << std::endl;
 		std::exit(EXIT_FAILURE);
@@ -49,8 +54,8 @@ void RPN::calculate(const std::string &op) {
 	int a = std::atoi(stack_.top().c_str());
 	stack_.pop();
 	typedef int (*FuncPtr)(int, int);
-	FuncPtr funcs[] = {&RPN::add, &RPN::subtract, &RPN::divide, &RPN::multiply};
-	for (int i = 0; i < 4; i++) {
+	FuncPtr funcs[] = {&add, &subtract, &divide, &multiply};
+	for (int i = 0; i < 4; ++i) {
 		if (op[0] == RPN::OP[i]) {
 			std::stringstream ss;
 			ss << (funcs[i])(a, b);
