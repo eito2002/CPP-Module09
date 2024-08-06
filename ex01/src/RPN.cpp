@@ -28,19 +28,19 @@ void RPN::PushAndCalculateNumbers(const std::string &line) {
 	}
 }
 
-static int add(int a, int b) {
+static int Add(int a, int b) {
 	return a + b;
 }
 
-static int subtract(int a, int b) {
+static int Subtract(int a, int b) {
 	return a - b;
 }
 
-static int multiply(int a, int b) {
+static int Multiply(int a, int b) {
 	return a * b;
 }
 
-static int divide(int a, int b) {
+static int Divide(int a, int b) {
 	if (b == 0) {
 		throw std::runtime_error("Error");
 	}
@@ -53,7 +53,7 @@ void RPN::Calculate(const std::string &op) {
 	int a = std::atoi(stack_.top().c_str());
 	stack_.pop();
 	typedef int (*FuncPtr)(int, int);
-	FuncPtr funcs[] = {&add, &subtract, &divide, &multiply};
+	FuncPtr funcs[] = {&Add, &Subtract, &Divide, &Multiply};
 	for (int i = 0; i < 4; ++i) {
 		if (op[0] == OP[i]) {
 			std::stringstream ss;
