@@ -7,8 +7,9 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
+	RPN rpn;
 	try {
-		RPN(std::string(argv[1]));
+		rpn.PushAndCalculateNumbers(argv[1]);
 	} catch (const std::exception &e) {
 		std::cerr << e.what() << '\n';
 	}

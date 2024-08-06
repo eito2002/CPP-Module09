@@ -4,23 +4,22 @@
 
 const std::string RPN::OP = "+-/*";
 
-RPN::RPN(const std::string &line) {
-	pushNumbers(line);
-}
+RPN::RPN() {}
 
 RPN::~RPN() {}
 
-void RPN::pushNumbers(const std::string &line) {
+void RPN::PushAndCalculateNumbers(const std::string &line) {
 	std::stringstream iss(line);
 	std::string       token;
 
+	stack_ = std::stack<std::string>();
 	while (iss >> token) {
 		if (token.length() >= 2) {
 			throw std::runtime_error("Error");
 		} else if (std::isdigit(token[0]))
 			stack_.push(token);
 		else if (OP.find(token[0]) != std::string::npos && stack_.size() >= 2)
-			calculate(token);
+			Calculate(token);
 	}
 	if (stack_.size() == 1)
 		std::cout << stack_.top() << std::endl;
@@ -48,7 +47,7 @@ static int divide(int a, int b) {
 	return a / b;
 }
 
-void RPN::calculate(const std::string &op) {
+void RPN::Calculate(const std::string &op) {
 	int b = std::atoi(stack_.top().c_str());
 	stack_.pop();
 	int a = std::atoi(stack_.top().c_str());

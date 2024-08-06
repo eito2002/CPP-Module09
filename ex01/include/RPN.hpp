@@ -10,16 +10,14 @@
 
 class RPN {
   private:
-	RPN();
 	DISALLOW_COPY_AND_ASSIGN(RPN);
+	void                    Calculate(const std::string &);
 	std::stack<std::string> stack_;
 
   public:
-	RPN(const std::string &);
+	RPN();
 	~RPN();
-	void pushNumbers(const std::string &);
-	void calculate(const std::string &);
-
+	void                     PushAndCalculateNumbers(const std::string &);
 	static const std::string OP;
 };
 
