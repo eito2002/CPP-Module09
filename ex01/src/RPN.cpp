@@ -13,6 +13,7 @@ RPN::~RPN() {}
 void RPN::pushNumbers(const std::string &line) {
 	std::stringstream iss(line);
 	std::string       token;
+
 	while (iss >> token) {
 		if (token.length() >= 2) {
 			throw std::runtime_error("Error");
@@ -28,22 +29,21 @@ void RPN::pushNumbers(const std::string &line) {
 	}
 }
 
-int add(int a, int b) {
+static int add(int a, int b) {
 	return a + b;
 }
 
-int subtract(int a, int b) {
+static int subtract(int a, int b) {
 	return a - b;
 }
 
-int multiply(int a, int b) {
+static int multiply(int a, int b) {
 	return a * b;
 }
 
-int divide(int a, int b) {
+static int divide(int a, int b) {
 	if (b == 0) {
-		std::cout << "Error" << std::endl;
-		std::exit(EXIT_FAILURE);
+		throw std::runtime_error("Error");
 	}
 	return a / b;
 }
