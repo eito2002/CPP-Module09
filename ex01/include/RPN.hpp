@@ -2,7 +2,6 @@
 #define RPN_HPP
 
 #include <stack>
-#include <string>
 
 #define DISALLOW_COPY_AND_ASSIGN(TypeName)                                                         \
 	TypeName(const TypeName &);                                                                    \
@@ -10,15 +9,15 @@
 
 class RPN {
   private:
-	DISALLOW_COPY_AND_ASSIGN(RPN);
-	void            Calculate(const std::string &);
 	std::stack<int> stack_;
+	DISALLOW_COPY_AND_ASSIGN(RPN);
+	void Calculate(const std::string &);
 
   public:
+	static const std::string OP;
 	RPN();
 	~RPN();
-	void                     PushAndCalculateNumbers(const std::string &);
-	static const std::string OP;
+	void PushAndCalculateNumbers(const std::string &);
 };
 
 #endif
