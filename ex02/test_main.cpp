@@ -44,6 +44,51 @@ std::list<std::list<int>> GroupList(const std::list<int> &list) {
 	return lists;
 }
 
+#define END -1
+
+void SplitList(const std::list<int> &list, std::list<int> &small_list, std::list<int> &large_list, std::list<std::pair<int, int>> &pairs) {
+    std::pair<int, int> pair;
+    std::list<int>::const_iterator it = list.begin();
+    while (it != list.end()) {
+        int first = *it;
+        ++it;
+        if (it != list.end()) {
+            int                 second = *it;
+            pair = std::pair<int, int>(first, second);
+            sort_pair(pair);
+            large_list.push_back(pair.second);
+            small_list.push_back(pair.first);
+            pairs.push_back(pair);
+            std::cout << "{ " <<  pair.first << ", " << pair.second << " }" << std::endl;
+            ++it;
+        } else {
+            pairs.push_back(pair);
+            small_list.push_back(first);
+        }
+    }
+}
+
+int FindPairMate(int val, std::list<std::pair<int, int>>& pairs) {
+    for (std::list<std::pair<int, int>>::iterator it = pairs.begin(); it != pairs.end(); ++it) {
+        if (it->first == val)
+            return it->second;
+    }
+    return END;
+}
+
+void BinaryInsertionSort(const std::list<int> &small_list, std::list<int> &large_list, std::list<std::pair<int, int>> &pairs) {
+	typedef std::list<int>::iterator Itr; //tmp
+
+    std::list<std::list<int>> lists = GroupList(small_list);
+	for (std::list<std::list<int>>::iterator it = lists.begin(); it != lists.end(); ++it) {
+		for (std::list<int>::reverse_iterator it2 = it->rbegin(); it2 != it->rend(); ++it2) {
+            Itr search_end = std::find(large_list.begin(), large_list.end(), FindPairMate(*it2, pairs));
+            Itr pos = std::lower_bound(large_list.begin(), search_end, *it2);
+			large_list.insert(pos, *it2);
+		}
+	}
+}
+
 void MergeInsertionSortlist(std::list<int> &list) {
 	typedef std::list<int>::iterator Itr;
 
@@ -51,22 +96,8 @@ void MergeInsertionSortlist(std::list<int> &list) {
 		return;
 	std::list<int> large_list;
 	std::list<int> small_list;
-	Itr            it = list.begin();
-	while (it != list.end()) {
-		int first = *it;
-		++it;
-		if (it != list.end()) {
-			int                 second = *it;
-			std::pair<int, int> pair(first, second);
-		    std::cout << "{" << pair.first << ", " << pair.second << "}" << std::endl;
-			sort_pair(pair);
-			large_list.push_back(pair.second);
-			small_list.push_back(pair.first);
-            ++it;
-		} else {
-			small_list.push_back(first);
-		}
-	}
+    std::list<std::pair<int, int>> pairs;
+	SplitList(list, small_list, large_list, pairs);
 
 	std::cout << large_list << std::endl;
 	std::cout << small_list << std::endl;
@@ -74,22 +105,7 @@ void MergeInsertionSortlist(std::list<int> &list) {
 	MergeInsertionSortlist(large_list);
 	large_list.push_front(small_list.front());
 	small_list.pop_front();
-	std::list<std::list<int>> lists = GroupList(small_list);
-	for (std::list<std::list<int>>::iterator it = lists.begin(); it != lists.end(); ++it) {
-		for (std::list<int>::reverse_iterator it2 = it->rbegin(); it2 != it->rend(); ++it2) {
-			bool inserted = false;
-			for (Itr it3 = large_list.begin(); it3 != large_list.end(); ++it3) {
-				if (*it3 >= *it2) {
-					large_list.insert(it3, *it2);
-					inserted = true;
-					break;
-				}
-			}
-			if (!inserted) {
-				large_list.push_back(*it2);
-			}
-		}
-	}
+	BinaryInsertionSort(small_list, large_list, pairs);
 
 	list = large_list;
 	std::cout << large_list << std::endl;
@@ -98,8 +114,8 @@ void MergeInsertionSortlist(std::list<int> &list) {
 }
 
 int main() {
-	std::list<int> list = {1, 3, 4, 10, 15, 12, 33, 23, 6};
-	// std::list<int> list = {1, 3, 4, 10, 15, 12, 33, 23, 13, 21, 64, 52, 90, 100, 120, 36};
+	// std::list<int> list = {1, 3, 4, 10, 15, 12, 33, 23, 6};
+	std::list<int> list = {1, 3, 4, 10, 15, 12, 33, 23, 13, 21, 64, 52, 90, 100, 120, 36};
 	MergeInsertionSortlist(list);
 	std::cout << list << std::endl;
 }
