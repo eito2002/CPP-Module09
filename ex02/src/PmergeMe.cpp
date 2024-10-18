@@ -38,7 +38,6 @@ bool PmergeMe::checkSorted() {
 namespace SortList {
 
 #include <list>
-#include <utility>
 
 struct Data {
 	int                                          num;
