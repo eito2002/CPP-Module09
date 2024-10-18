@@ -74,25 +74,22 @@ std::ostream &operator<<(std::ostream &os, const DataPairVector &vec) {
 }
 
 void BinarySearch(DataPairVector &sorted_vector, const DataPairVector &small_vector_to_insert) {
-	for (DataPairVector::const_reverse_iterator it = small_vector_to_insert.rbegin();
-		 it != small_vector_to_insert.rend();
-		 ++it) {
-		bool inserted = false;
-		for (DataPairVector::iterator pos = sorted_vector.begin(); pos != sorted_vector.end();
-			 ++pos) {
-			if (it->first.num < pos->first.num) {
-				DataPair pair = {it->first, it->first};
-				sorted_vector.insert(pos, pair);
-				inserted = true;
-				break;
-			}
-		}
-		// 一番大きい要素よりも大きい場合は終端に挿入
-		if (!inserted) {
-			DataPair pair = {it->first, it->first};
-			sorted_vector.push_back(pair);
-		}
-	}
+    for (std::size_t i = 0; i < small_vector_to_insert.size(); ++i) {
+        bool inserted = false;
+        for (std::size_t j = 0; j < sorted_vector.size(); ++j) {
+            if (small_vector_to_insert[i].first.num < sorted_vector[j].first.num) {
+                DataPair pair = {small_vector_to_insert[i].first, small_vector_to_insert[i].first};
+                sorted_vector.insert(sorted_vector.begin() + j, pair);
+                inserted = true;
+                break;
+            }
+        }
+        // 一番大きい要素よりも大きい場合は終端に挿入
+        if (!inserted) {
+            DataPair pair = {small_vector_to_insert[i].first, small_vector_to_insert[i].first};
+            sorted_vector.push_back(pair);
+        }
+    }
 }
 
 DataPairVector SplitPairVector(DataPairVector &pair_vector) {
