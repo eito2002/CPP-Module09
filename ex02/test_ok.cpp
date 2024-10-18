@@ -15,11 +15,6 @@ typedef std::pair<Data, Data> DataPair;
 typedef std::list<DataPair>   DataPairList;
 typedef std::list<Data>       DataList;
 
-void sort_pair(std::pair<Data, Data> &p) {
-	if (p.first.num > p.second.num)
-		std::swap(p.first, p.second);
-}
-
 std::ostream &operator<<(std::ostream &os, const std::list<int> &l) {
 	for (std::list<int>::const_iterator it = l.begin(); it != l.end(); ++it) {
 		os << *it;
@@ -34,19 +29,19 @@ std::ostream &operator<<(std::ostream &os, const Data &data) {
 	return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const std::list<Data> &l) {
-	for (std::list<Data>::const_iterator it = l.begin(); it != l.end(); ++it) {
+std::ostream &operator<<(std::ostream &os, const DataList &l) {
+	for (DataList::const_iterator it = l.begin(); it != l.end(); ++it) {
 		os << it->num;
-		if (++std::list<Data>::const_iterator(it) != l.end())
+		if (++DataList::const_iterator(it) != l.end())
 			os << ", ";
 	}
 	return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const std::list<std::list<Data>> &l) {
-	for (std::list<std::list<Data>>::const_iterator it = l.begin(); it != l.end(); ++it) {
+std::ostream &operator<<(std::ostream &os, const std::list<DataList> &l) {
+	for (std::list<DataList>::const_iterator it = l.begin(); it != l.end(); ++it) {
 		os << *it;
-		if (++std::list<std::list<Data>>::const_iterator(it) != l.end())
+		if (++std::list<DataList>::const_iterator(it) != l.end())
 			os << ", ";
 	}
 	return os;
@@ -70,8 +65,6 @@ std::list<DataPairList> GroupList(const DataPairList &list) {
 	return lists;
 }
 
-#define END -1
-
 std::ostream &operator<<(std::ostream &os, const DataPairList &list) {
 	for (DataPairList::const_iterator it = list.begin(); it != list.end(); ++it) {
 		os << "{ " << it->first.num << ", " << it->second.num << " }";
@@ -82,7 +75,6 @@ std::ostream &operator<<(std::ostream &os, const DataPairList &list) {
 }
 
 void BinarySearch(DataPairList &sorted_list, const DataPairList &small_list_to_insert) {
-	std::cout << __FUNCTION__ << std::endl;
 	for (DataPairList::const_reverse_iterator it = small_list_to_insert.rbegin();
 		 it != small_list_to_insert.rend();
 		 ++it) {
@@ -103,8 +95,6 @@ void BinarySearch(DataPairList &sorted_list, const DataPairList &small_list_to_i
 	}
 }
 
-typedef std::list<int>::const_iterator Itr;
-
 DataPairList SplitPairList(DataPairList &pair_list) {
 	DataPairList           pairs;
 	DataPairList::iterator it = pair_list.begin();
@@ -122,8 +112,8 @@ DataPairList SplitPairList(DataPairList &pair_list) {
 			num_pair = {num2, num1};
 		}
 		pairs.push_back(num_pair);
-		std::cout << "num_pair: { " << num_pair.first.num << ", " << num_pair.second.num << " }"
-				  << std::endl;
+		// std::cout << "num_pair: { " << num_pair.first.num << ", " << num_pair.second.num << " }"
+		// 		  << std::endl;
         // std::cout << "pair_first: { " << num_pair.first.pair_itr->first.num << ", " << num_pair.first.pair_itr->second.num << " }" << std::endl;
         // std::cout << "pair_second: { " << num_pair.second.pair_itr->first.num << ", " << num_pair.second.pair_itr->second.num << " }" << std::endl;
 	}
@@ -156,7 +146,6 @@ DataPairList
 MakeSmallList(DataPairList &sorted, const DataPairList &large, DataPairList &init_nums) {
 	DataPairList small_list;
 
-	// std::cout << "init_nums: " << init_nums << std::endl;
 	if (sorted.size() == 1) {
 		std::cout << large.begin()->first.num << std::endl;
 		small_list.push_back(*large.begin());
@@ -165,10 +154,6 @@ MakeSmallList(DataPairList &sorted, const DataPairList &large, DataPairList &ini
 			const DataPairList::iterator pre_itr = it->first.pair_itr; // firstでもsecondでも良い
 			// std::cout << "pre_itr: " <<   pre_itr->first.num << std::endl;
 			small_list.push_back(*pre_itr);
-			std::cout << "it->first: " << it->first.pair_itr->first.num << std::endl;
-			std::cout << "it->first: " << it->first.pair_itr->second.num << std::endl;
-			std::cout << "it->second: " << it->second.pair_itr->first.num << std::endl;
-			std::cout << "it->second: " << it->second.pair_itr->second.num << std::endl;
 			it->first.pair_itr  = pre_itr->second.pair_itr;
 			it->second.pair_itr = pre_itr->second.pair_itr;
 			// 1個前の pair_itr を次の pair_itr に更新
@@ -187,7 +172,6 @@ MakeSmallList(DataPairList &sorted, const DataPairList &large, DataPairList &ini
 		small_list.push_back(pair);
 	}
 
-	// std::cout << "small_list: " << small_list << std::endl;
 	return small_list;
 }
 
