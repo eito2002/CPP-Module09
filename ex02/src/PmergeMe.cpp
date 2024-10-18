@@ -37,11 +37,6 @@ bool PmergeMe::checkSorted() {
 
 namespace SortVector {
 
-#include <cmath>
-#include <iostream>
-#include <utility>
-#include <vector>
-
 struct Data {
 	int         num;
 	std::size_t pair_index;
@@ -85,6 +80,15 @@ std::ostream &operator<<(std::ostream &os, const std::vector<DataVector> &v) {
 	return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const DataPairVector &vec) {
+	for (DataPairVector::const_iterator it = vec.begin(); it != vec.end(); ++it) {
+		os << "{ " << it->first.num << ", " << it->second.num << " }";
+		if (std::next(it) != vec.end())
+			os << ", ";
+	}
+	return os;
+}
+
 std::vector<DataPairVector> GroupVector(const DataPairVector &vec) {
 	std::vector<DataPairVector> vectors;
 	int                         group_count = 0;
@@ -101,15 +105,6 @@ std::vector<DataPairVector> GroupVector(const DataPairVector &vec) {
 		++group_count;
 	}
 	return vectors;
-}
-
-std::ostream &operator<<(std::ostream &os, const DataPairVector &vec) {
-	for (DataPairVector::const_iterator it = vec.begin(); it != vec.end(); ++it) {
-		os << "{ " << it->first.num << ", " << it->second.num << " }";
-		if (std::next(it) != vec.end())
-			os << ", ";
-	}
-	return os;
 }
 
 void BinarySearch(DataPairVector &sorted_vector, const DataPairVector &small_vector_to_insert) {
@@ -253,8 +248,6 @@ std::vector<int> PmergeMe::MergeInsertionSortVector(std::vector<int> &vec) {
 
 namespace SortList {
 
-#include <list>
-
 struct Data {
 	int                                          num;
 	std::list< std::pair<Data, Data> >::iterator pair_itr;
@@ -296,6 +289,15 @@ std::ostream &operator<<(std::ostream &os, const std::list<DataList> &l) {
 	return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const DataPairList &list) {
+	for (DataPairList::const_iterator it = list.begin(); it != list.end(); ++it) {
+		os << "{ " << it->first.num << ", " << it->second.num << " }";
+		if (++DataPairList::const_iterator(it) != list.end())
+			os << ", ";
+	}
+	return os;
+}
+
 std::list<DataPairList> GroupList(const DataPairList &list) {
 	std::list<DataPairList> lists;
 	int                     group_count = 0;
@@ -312,15 +314,6 @@ std::list<DataPairList> GroupList(const DataPairList &list) {
 		++group_count;
 	}
 	return lists;
-}
-
-std::ostream &operator<<(std::ostream &os, const DataPairList &list) {
-	for (DataPairList::const_iterator it = list.begin(); it != list.end(); ++it) {
-		os << "{ " << it->first.num << ", " << it->second.num << " }";
-		if (++DataPairList::const_iterator(it) != list.end())
-			os << ", ";
-	}
-	return os;
 }
 
 void BinarySearch(DataPairList &sorted_list, const DataPairList &small_list_to_insert) {
