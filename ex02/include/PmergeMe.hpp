@@ -13,11 +13,8 @@ class PmergeMe {
 	PmergeMe();
 	DISALLOW_COPY_AND_ASSIGN(PmergeMe);
 	~PmergeMe();
-	static bool checkSorted();
 
   public:
-	static void printResult(int argc, char *argv[]);
-
 	static std::list<int>   MergeInsertionSortList(std::list<int> &list);
 	static std::vector<int> MergeInsertionSortVector(std::vector<int> &vec);
 };

@@ -1,40 +1,6 @@
 #include "PmergeMe.hpp"
 #include <iostream>
 
-void PmergeMe::printResult(int argc, char *argv[]) {
-	(void)argc;
-	(void)argv;
-	// std::cout << "Before: ";
-	// for (int i = 1; i < argc; i++)
-	// 	std::cout << argv[i] << " ";
-	// std::cout << std::endl;
-	// mergeSortVector(argc, argv);
-	// mergeSortList(argc, argv);
-	// if (checkSorted())
-	// {
-	// 	std::cout << "After:  ";
-	// 	for (std::vector<int>::iterator it = vector_.begin(); it != vector_.end(); it++)
-	// 		std::cout << *it << " ";
-	// 	std::cout << std::endl;
-	// 	std::cout << "Time to process a range of " << vector_.size() << " elements with std::vector
-	// : " << \ 				durationVec_ << " micro seconds" << std::endl;
-	// 	std::cout << "Time to process a range of " << list_.size() << " elemens with std::list : "
-	// << \ 				durationLis_ << " micro seconds" << std::endl;
-	// }
-	// else
-	// 	std::cout << "Error: not sorted" << std::endl;
-}
-
-bool PmergeMe::checkSorted() {
-	// if (vector_.size() != list_.size())
-	// 	return false;
-	// std::list<int>::iterator it = list_.begin();
-	// for (size_t i = 0; i < vector_.size(); i++, it++)
-	// 	if (vector_[i] != *it)
-	// 		return false;
-	return true;
-}
-
 namespace SortVector {
 
 struct Data {
