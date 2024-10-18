@@ -40,7 +40,7 @@ namespace SortList {
 #include <utility>
 
 struct Data {
-	int                                        num;
+	int                                          num;
 	std::list< std::pair<Data, Data> >::iterator pair_itr;
 };
 
@@ -111,26 +111,27 @@ void BinarySearch(DataPairList &sorted_list, const DataPairList &small_list_to_i
 	for (DataPairList::const_reverse_iterator it = small_list_to_insert.rbegin();
 		 it != small_list_to_insert.rend();
 		 ++it) {
-        bool inserted = false;
-        for (DataPairList::iterator pos = sorted_list.begin(); pos != sorted_list.end(); ++pos) {
-            if (it->first.num < pos->first.num) {
-            DataPair pair(it->first, it->first);
-            sorted_list.insert(pos, pair);
-            inserted = true;
-            break;
-            }
-        }
-        // 一番大きい要素よりも大きい場合は終端に挿入
-        if (!inserted) {
-            DataPair pair(it->first, it->first);
-            sorted_list.push_back(pair);
-        }
+		bool inserted = false;
+		for (DataPairList::iterator pos = sorted_list.begin(); pos != sorted_list.end(); ++pos) {
+			if (it->first.num < pos->first.num) {
+				DataPair pair(it->first, it->first);
+				sorted_list.insert(pos, pair);
+				inserted = true;
+				break;
+			}
+		}
+		// 一番大きい要素よりも大きい場合は終端に挿入
+		if (!inserted) {
+			DataPair pair(it->first, it->first);
+			sorted_list.push_back(pair);
+		}
 	}
 }
 
 DataPairList SplitPairList(DataPairList &pair_list) {
-	DataPairList           pairs;
-	for (DataPairList::iterator it = pair_list.begin(); it != pair_list.end() && std::next(it) != pair_list.end();
+	DataPairList pairs;
+	for (DataPairList::iterator it = pair_list.begin();
+		 it != pair_list.end() && std::next(it) != pair_list.end();
 		 std::advance(it, 2)) {
 		Data     num1 = {it->second.num, it};
 		Data     num2 = {std::next(it)->second.num, std::next(it)};
@@ -146,10 +147,7 @@ DataPairList SplitPairList(DataPairList &pair_list) {
 		pairs.push_back(num_pair);
 		// std::cout << "num_pair: { " << num_pair.first.num << ", " << num_pair.second.num << " }"
 		// 		  << std::endl;
-        // std::cout << "pair_first: { " << num_pair.first.pair_itr->first.num << ", " << num_pair.first.pair_itr->second.num << " }" << std::endl;
-        // std::cout << "pair_second: { " << num_pair.second.pair_itr->first.num << ", " << num_pair.second.pair_itr->second.num << " }" << std::endl;
 	}
-	std::cout << std::endl;
 	return pairs;
 }
 
@@ -179,7 +177,6 @@ MakeSmallList(DataPairList &sorted, const DataPairList &large, DataPairList &ini
 	DataPairList small_list;
 
 	if (sorted.size() == 1) {
-		std::cout << large.begin()->first.num << std::endl;
 		small_list.push_back(*large.begin());
 	} else {
 		for (DataPairList::iterator it = sorted.begin(); it != sorted.end(); ++it) {
@@ -196,10 +193,9 @@ MakeSmallList(DataPairList &sorted, const DataPairList &large, DataPairList &ini
 		}
 	}
 	// ペアが組めずに残った要素をsmallに追加
-	std::cout << init_nums.size() % 2 << std::endl;
 	if (init_nums.size() % 2 != 0) {
-        Data last = std::prev(init_nums.end())->second;
-        last.pair_itr = std::prev(init_nums.end());
+		Data last     = std::prev(init_nums.end())->second;
+		last.pair_itr = std::prev(init_nums.end());
 		DataPair pair(last, last);
 		small_list.push_back(pair);
 	}
@@ -208,11 +204,11 @@ MakeSmallList(DataPairList &sorted, const DataPairList &large, DataPairList &ini
 }
 
 std::list<int> ConvertToIntList(const DataPairList &list) {
-    std::list<int> int_list;
-    for (DataPairList::const_iterator it = list.begin(); it != list.end(); ++it) {
-        int_list.push_back(it->first.num);
-    }
-    return int_list;
+	std::list<int> int_list;
+	for (DataPairList::const_iterator it = list.begin(); it != list.end(); ++it) {
+		int_list.push_back(it->first.num);
+	}
+	return int_list;
 }
 
 DataPairList MergeInsertionSortList(DataPairList &pair_list) {
@@ -225,28 +221,26 @@ DataPairList MergeInsertionSortList(DataPairList &pair_list) {
 	DataPairList large_half_pairs = SplitPairList(pair_list);
 
 	DataPairList sorted_pair_list = MergeInsertionSortList(large_half_pairs);
-	std::cout << "sorted_pair_list: " << sorted_pair_list << std::endl;
-
+	// std::cout << "sorted_pair_list: " << sorted_pair_list << std::endl;
 	DataPairList small_half_pairs = MakeSmallList(sorted_pair_list, large_half_pairs, pair_list);
-
-	std::cout << "small_half_pairs: " << small_half_pairs << std::endl;
+	// std::cout << "small_half_pairs: " << small_half_pairs << std::endl;
 	DataPair pair(small_half_pairs.front().first, small_half_pairs.front().first);
 	sorted_pair_list.insert(sorted_pair_list.begin(), pair);
 	small_half_pairs.pop_front();
 	std::list<DataPairList> lists = GroupList(small_half_pairs);
-	for (std::list<DataPairList>::iterator itr = lists.begin(); itr != lists.end(); ++itr) {
-		std::cout << "lists: " << *itr << std::endl;
-	}
+	// for (std::list<DataPairList>::iterator itr = lists.begin(); itr != lists.end(); ++itr) {
+	// 	std::cout << "lists: " << *itr << std::endl;
+	// }
 	// small_half_pairs の小さい方を挿入していく
 	BinarySearch(sorted_pair_list, small_half_pairs);
-    
+
 	return sorted_pair_list;
 }
 
 std::list<int> MergeInsertionSortList(std::list<int> &list) {
-    DataPairList data_list = ConvertToDataPairList(list);
-    DataPairList sorted_list = MergeInsertionSortList(data_list);
-    return ConvertToIntList(sorted_list);
+	DataPairList data_list   = ConvertToDataPairList(list);
+	DataPairList sorted_list = MergeInsertionSortList(data_list);
+	return ConvertToIntList(sorted_list);
 }
 
 } // namespace SortList
