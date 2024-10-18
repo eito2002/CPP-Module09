@@ -78,7 +78,7 @@ void BinarySearch(DataPairVector &sorted_vector, const DataPairVector &small_vec
         bool inserted = false;
         for (std::size_t j = 0; j < sorted_vector.size(); ++j) {
             if (small_vector_to_insert[i].first.num < sorted_vector[j].first.num) {
-                DataPair pair = {small_vector_to_insert[i].first, small_vector_to_insert[i].first};
+                DataPair pair(small_vector_to_insert[i].first, small_vector_to_insert[i].first);
                 sorted_vector.insert(sorted_vector.begin() + j, pair);
                 inserted = true;
                 break;
@@ -86,7 +86,7 @@ void BinarySearch(DataPairVector &sorted_vector, const DataPairVector &small_vec
         }
         // 一番大きい要素よりも大きい場合は終端に挿入
         if (!inserted) {
-            DataPair pair = {small_vector_to_insert[i].first, small_vector_to_insert[i].first};
+            DataPair pair(small_vector_to_insert[i].first, small_vector_to_insert[i].first);
             sorted_vector.push_back(pair);
         }
     }
@@ -97,15 +97,15 @@ DataPairVector SplitPairVector(DataPairVector &pair_vector) {
 	for (std::size_t i = 0; i + 1 < pair_vector.size(); i += 2) {
 		Data     num1     = {pair_vector[i].second.num, i};
 		Data     num2     = {pair_vector[i + 1].second.num, i + 1};
-		DataPair num_pair = {num1, num2};
+		DataPair num_pair(num1, num2);
 		// 元々のペアのインデックスを保持 e.g. { 20, 21 }, { 17, 19 }
 		// -> { 19, 21 } でペアを作るが,
 		// 19 の pair_index に 1 を, 21 の pair_index に 0 を保持
         // ペアを作る時のインデックスを保持することで後から取得できるように
 		if (num1.num < num2.num) {
-			num_pair = {num1, num2};
+			num_pair = DataPair(num1, num2);
 		} else {
-			num_pair = {num2, num1};
+			num_pair = DataPair(num2, num1);
 		}
 		pairs.push_back(num_pair);
 		std::cout << "num_pair: { " << num_pair.first.num << ", " << num_pair.second.num << " }"
@@ -129,7 +129,7 @@ DataPairVector ConvertToDataPairVector(const std::vector<int> &int_vector) {
 	DataPairVector data_pair_vector;
 	for (std::size_t i = 0; i < int_vector.size(); ++i) {
 		Data     data = {int_vector[i], i};
-		DataPair pair = {data, data};
+		DataPair pair(data, data);
 		data_pair_vector.push_back(pair);
 	}
 	return data_pair_vector;
@@ -158,7 +158,7 @@ MakeSmallVector(DataPairVector &sorted, const DataPairVector &large, DataPairVec
 			// large: { 20, 21 }, { 17, 19 } で pre_index は 1, 0 (17, 20 を取得)
 			// -> 次に使いたいペアは { 13, 19 }, { 9, 21 }
 			// -> 19 から 13 を取得できるように, 21 から 9 を取得できるように
-			DataPair small = {large[pre_index].first, large[pre_index].first};
+			DataPair small(large[pre_index].first, large[pre_index].first);
 			small_vector.push_back(small);
 		}
 	}
@@ -166,7 +166,7 @@ MakeSmallVector(DataPairVector &sorted, const DataPairVector &large, DataPairVec
 	if (init_nums.size() % 2 != 0) {
 		Data last       = init_nums.back().second;
 		last.pair_index = init_nums.size() - 1;
-		DataPair pair   = {last, last};
+		DataPair pair(last, last);
 		small_vector.push_back(pair);
 	}
 
@@ -198,7 +198,7 @@ DataPairVector MergeInsertionSortVector(DataPairVector &pair_vector) {
 		MakeSmallVector(sorted_pair_vector, large_half_pairs, pair_vector);
 
 	std::cout << "small_half_pairs: " << small_half_pairs << std::endl;
-	DataPair pair = {small_half_pairs.front().first, small_half_pairs.front().first};
+	DataPair pair(small_half_pairs.front().first, small_half_pairs.front().first);
 	sorted_pair_vector.insert(sorted_pair_vector.begin(), pair);
 	small_half_pairs.erase(small_half_pairs.begin());
 	std::vector<DataPairVector> vectors = GroupVector(small_half_pairs);
