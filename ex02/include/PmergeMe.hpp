@@ -2,6 +2,7 @@
 #define PMERGE_ME_HPP
 
 #include <list>
+#include <vector>
 
 #define DISALLOW_COPY_AND_ASSIGN(TypeName)                                                         \
 	TypeName(const TypeName &);                                                                    \
@@ -17,7 +18,8 @@ class PmergeMe {
   public:
 	static void printResult(int argc, char *argv[]);
 
-	static std::list<int> MergeInsertionSortList(std::list<int> &list);
+	static std::list<int>   MergeInsertionSortList(std::list<int> &list);
+	static std::vector<int> MergeInsertionSortVector(std::vector<int> &vec);
 };
 
 #endif

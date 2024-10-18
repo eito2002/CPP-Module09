@@ -28,5 +28,17 @@ int main(int argc, char *argv[]) {
 		if (++std::list<int>::iterator(it) != sorted_list.end())
 			std::cout << ", ";
 	}
+
+    std::vector<int> vec;
+    for (int i = 1; i < argc; i++) {
+        vec.push_back(std::atoi(argv[i]));
+    }
+    std::cout << std::endl << std::endl;
+    std::vector<int> sorted_vec = PmergeMe::MergeInsertionSortVector(vec);
+    for (std::vector<int>::iterator it = sorted_vec.begin(); it != sorted_vec.end(); ++it) {
+        std::cout << *it;
+        if (++std::vector<int>::iterator(it) != sorted_vec.end())
+            std::cout << ", ";
+    }
 	return 0;
 }
