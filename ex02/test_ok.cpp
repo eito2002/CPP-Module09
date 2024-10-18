@@ -5,10 +5,6 @@
 struct Data {
 	int                                        num;
 	std::list<std::pair<Data, Data>>::iterator pair_itr;
-
-	bool operator==(const Data &other) const {
-		return num == other.num;
-	}
 };
 
 typedef std::pair<Data, Data> DataPair;
@@ -211,17 +207,19 @@ DataPairList MergeInsertionSortList(DataPairList &pair_list) {
 	return sorted_pair_list;
 }
 
+std::list<int> MergeInsertionSortList(std::list<int> &list) {
+    DataPairList data_list = ConvertToDataPairList(list);
+    DataPairList sorted_list = MergeInsertionSortList(data_list);
+    return ConvertToIntList(sorted_list);
+}
+
 int main() {
 	// std::list<int> list = {1, 3, 4, 10, 15, 12, 33, 23, 6};
 	// std::list<int> list = {1, 3, 4, 10, 15, 12, 33, 23, 13, 21, 64, 52, 90, 100, 120, 36};
 	// std::list<int> list = {125, 32, 43343, 1212, 1, 2, 22, 272};
 	std::list<int>                   list      = {9, 2,  21, 15, 20, 3,  7, 1,  6,  11, 17,
 												  4, 19, 16, 10, 13, 18, 5, 12, 22, 8,  14};
-	std::list<std::pair<Data, Data>> data_list = ConvertToDataPairList(list);
-
-    DataPairList sorted_list = MergeInsertionSortList(data_list);
-
-    std::list<int> sorted_int_list = ConvertToIntList(sorted_list);
+	std::list<int>                   sorted_int_list = MergeInsertionSortList(list);
 
     std::cout << "sorted_list: " << sorted_int_list << std::endl;
 	// std::cout << list << std::endl;
