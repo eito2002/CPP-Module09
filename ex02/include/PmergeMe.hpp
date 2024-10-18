@@ -1,12 +1,7 @@
 #ifndef PMERGE_ME_HPP
 #define PMERGE_ME_HPP
 
-#include <algorithm>
-#include <ctime>
-#include <iostream>
 #include <list>
-#include <sstream>
-#include <vector>
 
 #define DISALLOW_COPY_AND_ASSIGN(TypeName)                                                         \
 	TypeName(const TypeName &);                                                                    \
@@ -14,13 +9,6 @@
 
 class PmergeMe {
   private:
-	std::vector<int> vector_;
-	std::list<int>   list_;
-	clock_t          startTimeVec_;
-	clock_t          startTimeLis_;
-	double           durationVec_;
-	double           durationLis_;
-
 	PmergeMe();
 	DISALLOW_COPY_AND_ASSIGN(PmergeMe);
 	~PmergeMe();

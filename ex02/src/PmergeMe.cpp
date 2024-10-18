@@ -1,4 +1,5 @@
 #include "PmergeMe.hpp"
+#include <iostream>
 
 void PmergeMe::printResult(int argc, char *argv[]) {
 	(void)argc;
