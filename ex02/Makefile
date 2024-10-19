@@ -42,7 +42,7 @@ all: $(NAME)
 clean:
 	-$(RM) $(RMFLAGS) $(OBJDIR)
 fclean: clean
-	-$(RM) $(RMFLAGS) $(NAME) $(RESULT)
+	-$(RM) $(RMFLAGS) $(NAME) $(RESULT)*
 re: fclean all
 
 debug: fclean all
@@ -95,9 +95,25 @@ test_fail:
 	-./$(NAME) 2147483648 126 2121 3223
 	@echo "\033[2;3mError handling tests finished\033[m"
 
-count:
+count: fclean
+	@$(MAKE) all ENABLE_COMPARISON_COUNT=1
 	@echo "\033[34;1;3mCounting the number of comparisons\033[m"
-	@$(MAKE) test ENABLE_COMPARISON_COUNT=1
+	@echo "\n\033[33;42m[TEST1]\033[m"
+	-./$(NAME) 42
+	@echo "\n\033[33;42m[TEST2]\033[m"
+	-./$(NAME) 225 12 3232 34348 1221
+	@echo "\n\033[33;42m[TEST3]\033[m"
+	-./$(NAME) 125 32 43343 1212 1 1 1 22 22
+	@echo "\n\033[33;42m[TEST4]\033[m"
+	-./$(NAME) 12 3232 121526 237 346 126 43738 1267 432379 5865 3473 23627 43 444
+	@echo "\n\033[33;42m[TEST5]\033[m"
+	-./$(NAME) 896 495 449 694 863 366 164 86 543 584 541 447 599 6 326 398 637 997 199 788 66 49 596 715 809 411 699 872 979 695
+	@echo "\n\033[33;42m[TEST6]\033[m"
+	-./$(NAME) `jot -r 3000 1 100000 | tr '\n' ' '` > $(RESULT)_3000
+	@echo "\n\033[33;42m[RANDOM TEST1]\033[m"
+	-./$(NAME) `jot -r 6000 1 100000 | tr '\n' ' '` > $(RESULT)_6000
+	@echo "\n\033[33;42m[RANDOM TEST2]\033[m"
+	-./$(NAME) `jot -r 10000 1 100000 | tr '\n' ' '` > $(RESULT)_10000
 
 $(NAME): $(OBJS)
 	$(CXX) $(LDFLAGS) $(OBJS) -o $(NAME)
