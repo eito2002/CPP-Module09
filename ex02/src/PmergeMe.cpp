@@ -73,21 +73,37 @@ std::vector<DataPairVector> GroupVector(const DataPairVector &vec) {
 	return vectors;
 }
 
-void BinarySearch(DataPairVector &sorted_vector, const DataPairVector &small_vector_to_insert) {
-	for (std::size_t i = 0; i < small_vector_to_insert.size(); ++i) {
-		bool inserted = false;
-		for (std::size_t j = 0; j < sorted_vector.size(); ++j) {
-			if (small_vector_to_insert[i].first.num < sorted_vector[j].first.num) {
-				DataPair pair(small_vector_to_insert[i].first, small_vector_to_insert[i].first);
-				sorted_vector.insert(sorted_vector.begin() + j, pair);
-				inserted = true;
-				break;
+void BinarySearch(
+	DataPairVector       &sorted_vector,
+	const DataPairVector &small_vector_to_insert,
+	std::size_t           search_end_base
+) {
+	std::size_t inserted_before = 0;
+	for (std::size_t i = small_vector_to_insert.size(); i > 0; --i) {
+		std::size_t search_start_idx = 0;
+		std::size_t search_end_idx   = i + search_end_base + inserted_before + 1;
+		if (search_end_idx >= sorted_vector.size()) {
+			search_end_idx = sorted_vector.size();
+		}
+
+		// 二分探索
+		while (search_start_idx < search_end_idx) {
+			std::size_t mid = search_start_idx + (search_end_idx - search_start_idx) / 2;
+			if (small_vector_to_insert[i - 1].first.num < sorted_vector[mid].first.num) {
+				search_end_idx = mid;
+			} else {
+				search_start_idx = mid + 1;
 			}
 		}
-		// 一番大きい要素よりも大きい場合は終端に挿入
-		if (!inserted) {
-			DataPair pair(small_vector_to_insert[i].first, small_vector_to_insert[i].first);
-			sorted_vector.push_back(pair);
+
+		sorted_vector.insert(
+			sorted_vector.begin() + search_start_idx,
+			DataPair(small_vector_to_insert[i - 1].first, small_vector_to_insert[i - 1].first)
+		);
+
+		std::size_t next_search_end_idx = i + search_end_base + inserted_before + 1;
+		if (search_start_idx <= next_search_end_idx) {
+			inserted_before += 1;
 		}
 	}
 }
@@ -179,23 +195,19 @@ DataPairVector MergeInsertionSortVector(DataPairVector &pair_vector) {
 		return_vector.push_back(DataPair(pair_vector.front().second, pair_vector.front().second));
 		return return_vector;
 	}
-	DataPairVector large_half_pairs = SplitPairVector(pair_vector);
-	// std::cout << "large_half_pairs: " << large_half_pairs << std::endl;
+	DataPairVector large_half_pairs   = SplitPairVector(pair_vector);
 	DataPairVector sorted_pair_vector = MergeInsertionSortVector(large_half_pairs);
-	// std::cout << "sorted_pair_vector: " << sorted_pair_vector << std::endl;
 	DataPairVector small_half_pairs =
 		MakeSmallVector(sorted_pair_vector, large_half_pairs, pair_vector);
-	// std::cout << "small_half_pairs: " << small_half_pairs << std::endl;
 	DataPair pair(small_half_pairs.front().first, small_half_pairs.front().first);
 	sorted_pair_vector.insert(sorted_pair_vector.begin(), pair);
 	small_half_pairs.erase(small_half_pairs.begin());
-	std::vector<DataPairVector> vectors = GroupVector(small_half_pairs);
-	// for (std::vector<DataPairVector>::iterator itr = vectors.begin(); itr != vectors.end();
-	// ++itr) {
-	//     std::cout << "vectors: " << *itr << std::endl;
-	// }
-	// small_half_pairs の小さい方を挿入していく
-	BinarySearch(sorted_pair_vector, small_half_pairs);
+	std::vector<DataPairVector> vectors         = GroupVector(small_half_pairs);
+	std::size_t                 search_end_base = 0;
+	for (std::vector<DataPairVector>::iterator itr = vectors.begin(); itr != vectors.end(); ++itr) {
+		BinarySearch(sorted_pair_vector, *itr, search_end_base);
+		search_end_base += itr->size() * 2;
+	}
 
 	return sorted_pair_vector;
 }
