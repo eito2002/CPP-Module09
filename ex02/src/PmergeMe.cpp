@@ -329,13 +329,13 @@ void BinarySearch(
 		 it != small_list_to_insert.rend();
 		 ++it) {
 		DataPairList::iterator search_start_itr = sorted_list.begin();
-		std::size_t            search_end_idx =
-			std::distance(small_list_to_insert.begin(), it.base()) + search_end_base + 1;
+		std::size_t search_end_idx = std::distance(small_list_to_insert.begin(), it.base()) +
+									 search_end_base + inserted_before + 1;
 		DataPairList::iterator search_end_itr;
-		if (search_end_idx + inserted_before >= sorted_list.size()) {
+		if (search_end_idx >= sorted_list.size()) {
 			search_end_itr = sorted_list.end();
 		} else {
-			search_end_itr = std::next(sorted_list.begin(), search_end_idx + inserted_before);
+			search_end_itr = std::next(sorted_list.begin(), search_end_idx);
 		}
 
 		// 二分探索
@@ -348,16 +348,16 @@ void BinarySearch(
 				search_start_itr = ++mid;
 			}
 		}
+		sorted_list.insert(search_start_itr, DataPair(it->first, it->first));
+		// e.g. sorted_list: { 11, 11 }, { 17, 17 }, { 19, 19 }, { 20, 20 }, { 21, 21 }, { 22, 22 }
+		// に lists: { 13, 19 }, { 7, 20 } を挿入する場合
+		// 7 は 11 の前に挿入、この時のdistanceは 1
+		// ({ 7, 7 }, { 11, 11 }, { 17, 17 }, { 19, 19 }, { 20, 20 }, { 21, 21 }, { 22, 22 })
+		// 次の挿入する 13 のend_indexは 19 の位置であり、元々は 2 だったが 7 を挿入したため
+		// inserted_beforeを 1 増やして 3 になる
 		std::size_t next_search_end_idx =
 			std::distance(small_list_to_insert.begin(), std::next(it).base()) + search_end_base +
-			inserted_before + 2;
-		sorted_list.insert(search_start_itr, DataPair(it->first, it->first));
-		// e.g. sorted_list: { 584, 584 }, { 599, 599 }, { 896, 896 }, { 997, 997 }
-		// に lists: { 863, 896 }, { 715, 997 } を挿入する場合
-		// 715 は 896 の前に挿入、この時のdistanceは 3
-		// ({ 584, 584 }, { 599, 599 }, {715, 715}, { 896, 896 }, { 997, 997 })
-		// 次の挿入する 863 のend_indexは 896 の位置であり、元々は 2 だったが 715 を挿入したため 3
-		// になる
+			inserted_before + inserted_before + 1;
 		if (static_cast<std::size_t>(std::distance(sorted_list.begin(), search_end_itr)) <=
 			next_search_end_idx + 1) {
 			inserted_before += 1;
