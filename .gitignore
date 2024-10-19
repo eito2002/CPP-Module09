@@ -1,17 +1,10 @@
-# config
-.vscode
+*
+!**/
 
-# objects
-*.o
+!*.cpp
+!*.hpp
+!Makefile
 
-# data
-*.d
-
-# executables
-btc
-RPN
-PmergeMe
-
-input.txt
-data.csv
-result
+!.clang-format
+!README.md
+!gitignore
