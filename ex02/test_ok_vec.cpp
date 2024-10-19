@@ -73,35 +73,63 @@ std::ostream &operator<<(std::ostream &os, const DataPairVector &vec) {
 	return os;
 }
 
-void BinarySearch(DataPairVector &sorted_vector, const DataPairVector &small_vector_to_insert) {
-    for (std::size_t i = 0; i < small_vector_to_insert.size(); ++i) {
-        bool inserted = false;
-        for (std::size_t j = 0; j < sorted_vector.size(); ++j) {
-            if (small_vector_to_insert[i].first.num < sorted_vector[j].first.num) {
-                DataPair pair(small_vector_to_insert[i].first, small_vector_to_insert[i].first);
-                sorted_vector.insert(sorted_vector.begin() + j, pair);
-                inserted = true;
-                break;
-            }
-        }
-        // 一番大きい要素よりも大きい場合は終端に挿入
-        if (!inserted) {
-            DataPair pair(small_vector_to_insert[i].first, small_vector_to_insert[i].first);
-            sorted_vector.push_back(pair);
-        }
-    }
+void BinarySearch(
+	DataPairVector       &sorted_vector,
+	const DataPairVector &small_vector_to_insert,
+	std::size_t           search_end_base
+) {
+    std::cout << __FUNCTION__ << std::endl;
+	std::cout << "search_end_base: " << search_end_base << std::endl;
+	std::size_t inserted_before = 0;
+	for (std::size_t i = small_vector_to_insert.size(); i > 0; --i) {
+		std::size_t search_start_idx = 0;
+		std::size_t search_end_idx   = i + search_end_base + inserted_before + 1;
+		if (search_end_idx >= sorted_vector.size()) {
+			search_end_idx = sorted_vector.size();
+		}
+        std::cout << "i: " << i << std::endl;
+
+        std::cout << "inserted_before: " << inserted_before << std::endl;
+		std::cout << "to_insert: " << small_vector_to_insert[i - 1].first.num << std::endl;
+        std::cout << "search_end_idx: " << search_end_idx << std::endl;
+		std::cout << "search_end: " << sorted_vector[search_end_idx].first.num << std::endl;
+
+		// 二分探索
+		while (search_start_idx < search_end_idx) {
+			std::size_t mid = search_start_idx + (search_end_idx - search_start_idx) / 2;
+			if (small_vector_to_insert[i - 1].first.num < sorted_vector[mid].first.num) {
+				search_end_idx = mid;
+			} else {
+				search_start_idx = mid + 1;
+			}
+		}
+
+		sorted_vector.insert(
+			sorted_vector.begin() + search_start_idx,
+			DataPair(small_vector_to_insert[i - 1].first, small_vector_to_insert[i - 1].first)
+		);
+		std::cout << "sorted_vector: " << sorted_vector << std::endl;
+
+		std::size_t next_search_end_idx = i + search_end_base + inserted_before + 1;
+        std::cout << "next_search_end_idx: " << next_search_end_idx << std::endl;
+        std::cout << "search_start_idx: " << search_start_idx << std::endl;
+		if (search_start_idx <= next_search_end_idx) {
+            std::cout << "inserted_before!!!" << std::endl;
+			inserted_before += 1;
+		}
+	}
 }
 
 DataPairVector SplitPairVector(DataPairVector &pair_vector) {
 	DataPairVector pairs;
 	for (std::size_t i = 0; i + 1 < pair_vector.size(); i += 2) {
-		Data     num1     = {pair_vector[i].second.num, i};
-		Data     num2     = {pair_vector[i + 1].second.num, i + 1};
+		Data     num1 = {pair_vector[i].second.num, i};
+		Data     num2 = {pair_vector[i + 1].second.num, i + 1};
 		DataPair num_pair(num1, num2);
 		// 元々のペアのインデックスを保持 e.g. { 20, 21 }, { 17, 19 }
 		// -> { 19, 21 } でペアを作るが,
 		// 19 の pair_index に 1 を, 21 の pair_index に 0 を保持
-        // ペアを作る時のインデックスを保持することで後から取得できるように
+		// ペアを作る時のインデックスを保持することで後から取得できるように
 		if (num1.num < num2.num) {
 			num_pair = DataPair(num1, num2);
 		} else {
@@ -110,8 +138,8 @@ DataPairVector SplitPairVector(DataPairVector &pair_vector) {
 		pairs.push_back(num_pair);
 		std::cout << "num_pair: { " << num_pair.first.num << ", " << num_pair.second.num << " }"
 				  << std::endl;
-        std::cout << num_pair.first.pair_index << std::endl;
-        std::cout << num_pair.second.pair_index << std::endl;
+		std::cout << num_pair.first.pair_index << std::endl;
+		std::cout << num_pair.second.pair_index << std::endl;
 	}
 	std::cout << std::endl;
 	return pairs;
@@ -139,20 +167,21 @@ DataPairVector
 MakeSmallVector(DataPairVector &sorted, const DataPairVector &large, DataPairVector &init_nums) {
 	DataPairVector small_vector;
 
-    std::cout << __FUNCTION__ << std::endl;
-    std::cout << "sorted: " << sorted << std::endl;
-    std::cout << "large: " << large << std::endl;
+	// std::cout << __FUNCTION__ << std::endl;
+	// std::cout << "sorted: " << sorted << std::endl;
+	// std::cout << "large: " << large << std::endl;
 	if (sorted.size() == 1) {
 		std::cout << large.begin()->first.num << std::endl;
 		small_vector.push_back(*large.begin());
 	} else {
 		for (std::size_t i = 0; i < sorted.size(); i++) {
 			const std::size_t pre_index = sorted[i].first.pair_index;
-            std::cout << "pre_index: " << pre_index << std::endl;
-			sorted[i].first.pair_index  = large[pre_index].second.pair_index;
-            std::cout << "sorted[i].first.pair_index: " << sorted[i].first.pair_index << std::endl;
+			// std::cout << "pre_index: " << pre_index << std::endl;
+			sorted[i].first.pair_index = large[pre_index].second.pair_index;
+			// std::cout << "sorted[i].first.pair_index: " << sorted[i].first.pair_index << std::endl;
 			sorted[i].second.pair_index = large[pre_index].second.pair_index;
-            std::cout << "sorted[i].second.pair_index: " << sorted[i].second.pair_index << std::endl;
+			// std::cout << "sorted[i].second.pair_index: " << sorted[i].second.pair_index
+			// 		  << std::endl;
 			// 1個前の pair_index を次の pair_index に更新
 			// e.g. sorted { 19, 19 }, { 21, 21 }
 			// large: { 20, 21 }, { 17, 19 } で pre_index は 1, 0 (17, 20 を取得)
@@ -201,13 +230,15 @@ DataPairVector MergeInsertionSortVector(DataPairVector &pair_vector) {
 	DataPair pair(small_half_pairs.front().first, small_half_pairs.front().first);
 	sorted_pair_vector.insert(sorted_pair_vector.begin(), pair);
 	small_half_pairs.erase(small_half_pairs.begin());
-	std::vector<DataPairVector> vectors = GroupVector(small_half_pairs);
-	// for (std::vector<DataPairVector>::iterator itr = vectors.begin(); itr != vectors.end();
-	// ++itr) {
-	//     std::cout << "vectors: " << *itr << std::endl;
-	// }
-	// small_half_pairs の小さい方を挿入していく
-	BinarySearch(sorted_pair_vector, small_half_pairs);
+	std::vector<DataPairVector> vectors         = GroupVector(small_half_pairs);
+	std::size_t                 search_end_base = 0;
+    for (std::vector<DataPairVector>::iterator itr = vectors.begin(); itr != vectors.end(); ++itr) {
+        std::cout << "insert_vectors: " << *itr << std::endl;
+    }
+	for (std::vector<DataPairVector>::iterator itr = vectors.begin(); itr != vectors.end(); ++itr) {
+		BinarySearch(sorted_pair_vector, *itr, search_end_base);
+		search_end_base += itr->size() * 2;
+	}
 
 	return sorted_pair_vector;
 }
@@ -221,8 +252,11 @@ std::vector<int> MergeInsertionSortVector(std::vector<int> &vec) {
 }
 
 int main() {
-	std::vector<int> vec               = {9, 2,  21, 15, 20, 3,  7, 1,  6,  11, 17,
-										  4, 19, 16, 10, 13, 18, 5, 12, 22, 8,  14};
+	// std::vector<int> vec               = {9, 2,  21, 15, 20, 3,  7, 1,  6,  11, 17,
+	// 									  4, 19, 16, 10, 13, 18, 5, 12, 22, 8,  14};
+	std::vector<int>   vec              = {896, 495, 449, 694, 863, 366, 164, 86,  543, 584,
+										  541, 447, 599, 6,   326, 398, 637, 997, 199, 788,
+										  66,  49,  596, 715, 809, 411, 699, 872, 979, 695};
 	std::vector<int> sorted_int_vector = MergeInsertionSortVector(vec);
 
 	std::cout << "sorted_vector: " << sorted_int_vector << std::endl;
