@@ -282,25 +282,42 @@ std::list<DataPairList> GroupList(const DataPairList &list) {
 	return lists;
 }
 
-void BinarySearch(DataPairList &sorted_list, const DataPairList &small_list_to_insert) {
+std::size_t BinarySearch(
+	DataPairList &sorted_list, const DataPairList &small_list_to_insert, std::size_t search_end_base
+) {
+	std::size_t inserted_before = 0;
 	for (DataPairList::const_reverse_iterator it = small_list_to_insert.rbegin();
 		 it != small_list_to_insert.rend();
 		 ++it) {
-		bool inserted = false;
-		for (DataPairList::iterator pos = sorted_list.begin(); pos != sorted_list.end(); ++pos) {
-			if (it->first.num < pos->first.num) {
-				DataPair pair(it->first, it->first);
-				sorted_list.insert(pos, pair);
-				inserted = true;
-				break;
+		DataPairList::iterator search_start_itr = sorted_list.begin();
+		std::size_t            search_end_idx =
+			std::distance(small_list_to_insert.begin(), it.base()) + search_end_base + 1;
+		DataPairList::iterator search_end_itr;
+		if (search_end_idx + inserted_before >= sorted_list.size()) {
+			search_end_itr = sorted_list.end();
+		} else {
+			search_end_itr = std::next(sorted_list.begin(), search_end_idx + inserted_before);
+		}
+
+		// 二分探索を手動で実装
+		while (search_start_itr != search_end_itr) {
+			DataPairList::iterator mid = search_start_itr;
+			std::advance(mid, std::distance(search_start_itr, search_end_itr) / 2);
+			if (it->first.num < mid->first.num) {
+				search_end_itr = mid;
+			} else {
+				search_start_itr = ++mid;
 			}
 		}
-		// 一番大きい要素よりも大きい場合は終端に挿入
-		if (!inserted) {
-			DataPair pair(it->first, it->first);
-			sorted_list.push_back(pair);
+		std::size_t next_search_end_idx =
+			std::distance(small_list_to_insert.begin(), std::next(it).base()) + search_end_base + 1;
+		sorted_list.insert(search_start_itr, DataPair(it->first, it->first));
+		if (static_cast<std::size_t>(std::distance(sorted_list.begin(), search_end_itr)) <=
+			next_search_end_idx) {
+			inserted_before += 1;
 		}
 	}
+	return inserted_before + 1;
 }
 
 DataPairList SplitPairList(DataPairList &pair_list) {
@@ -320,8 +337,6 @@ DataPairList SplitPairList(DataPairList &pair_list) {
 			num_pair = DataPair(num2, num1);
 		}
 		pairs.push_back(num_pair);
-		// std::cout << "num_pair: { " << num_pair.first.num << ", " << num_pair.second.num << " }"
-		// 		  << std::endl;
 	}
 	return pairs;
 }
@@ -394,20 +409,19 @@ DataPairList MergeInsertionSortList(DataPairList &pair_list) {
 		return return_list;
 	}
 	DataPairList large_half_pairs = SplitPairList(pair_list);
-
 	DataPairList sorted_pair_list = MergeInsertionSortList(large_half_pairs);
-	// std::cout << "sorted_pair_list: " << sorted_pair_list << std::endl;
 	DataPairList small_half_pairs = MakeSmallList(sorted_pair_list, large_half_pairs, pair_list);
 	// std::cout << "small_half_pairs: " << small_half_pairs << std::endl;
 	DataPair pair(small_half_pairs.front().first, small_half_pairs.front().first);
 	sorted_pair_list.insert(sorted_pair_list.begin(), pair);
 	small_half_pairs.pop_front();
 	std::list<DataPairList> lists = GroupList(small_half_pairs);
-	// for (std::list<DataPairList>::iterator itr = lists.begin(); itr != lists.end(); ++itr) {
-	// 	std::cout << "lists: " << *itr << std::endl;
-	// }
 	// small_half_pairs の小さい方を挿入していく
-	BinarySearch(sorted_pair_list, small_half_pairs);
+	std::size_t search_end_base = 0;
+	for (std::list<DataPairList>::iterator itr = lists.begin(); itr != lists.end(); ++itr) {
+		search_end_base += BinarySearch(sorted_pair_list, *itr, search_end_base);
+		search_end_base += itr->size();
+	}
 
 	return sorted_pair_list;
 }
