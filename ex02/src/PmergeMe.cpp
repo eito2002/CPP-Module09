@@ -282,7 +282,7 @@ std::list<DataPairList> GroupList(const DataPairList &list) {
 	return lists;
 }
 
-std::size_t BinarySearch(
+void BinarySearch(
 	DataPairList &sorted_list, const DataPairList &small_list_to_insert, std::size_t search_end_base
 ) {
 	std::size_t inserted_before = 0;
@@ -312,12 +312,17 @@ std::size_t BinarySearch(
 		std::size_t next_search_end_idx =
 			std::distance(small_list_to_insert.begin(), std::next(it).base()) + search_end_base + 1;
 		sorted_list.insert(search_start_itr, DataPair(it->first, it->first));
+		// e.g. sorted_list: { 584, 584 }, { 599, 599 }, { 896, 896 }, { 997, 997 }
+		// に lists: { 863, 896 }, { 715, 997 } を挿入する場合
+		// 715 は 896 の前に挿入、この時のdistanceは 3
+		// ({ 584, 584 }, { 599, 599 }, {715, 715}, { 896, 896 }, { 997, 997 })
+		// 次の挿入する 863 のend_indexは 896 の位置であり、元々は 2 だったが 715 を挿入したため 3
+		// になる
 		if (static_cast<std::size_t>(std::distance(sorted_list.begin(), search_end_itr)) <=
-			next_search_end_idx) {
+			next_search_end_idx + 1) {
 			inserted_before += 1;
 		}
 	}
-	return inserted_before + 1;
 }
 
 DataPairList SplitPairList(DataPairList &pair_list) {
@@ -419,8 +424,8 @@ DataPairList MergeInsertionSortList(DataPairList &pair_list) {
 	// small_half_pairs の小さい方を挿入していく
 	std::size_t search_end_base = 0;
 	for (std::list<DataPairList>::iterator itr = lists.begin(); itr != lists.end(); ++itr) {
-		search_end_base += BinarySearch(sorted_pair_list, *itr, search_end_base);
-		search_end_base += itr->size();
+		BinarySearch(sorted_pair_list, *itr, search_end_base);
+		search_end_base += itr->size() * 2;
 	}
 
 	return sorted_pair_list;
