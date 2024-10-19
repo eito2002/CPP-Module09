@@ -105,7 +105,7 @@ std::size_t BinarySearch(
 			}
 		}
 		std::size_t next_search_end_idx =
-			std::distance(small_list_to_insert.begin(), std::next(it).base()) + search_end_base + 1;
+			std::distance(small_list_to_insert.begin(), std::next(it).base()) + search_end_base + inserted_before + 2;
 		std::cout << "next_search_end_idx: " << next_search_end_idx << std::endl;
 		DataPairList::iterator insert_itr =
 			sorted_list.insert(search_start_itr, DataPair(it->first, it->first));
@@ -256,10 +256,10 @@ int main() {
 	// std::list<int> list = {1, 3, 4, 10, 15, 12, 33, 23, 6};
 	// std::list<int> list = {1, 3, 4, 10, 15, 12, 33, 23, 13, 21, 64, 52, 90, 100, 120, 36};
 	// std::list<int> list = {125, 32, 43343, 1212, 1, 2, 22, 272};
-	std::list<int> list            = {896, 495, 449, 694, 863, 366, 164, 86,  543, 584,
-									  541, 447, 599, 6,   326, 398, 637, 997, 199, 788,
-									  66,  49,  596, 715, 809, 411, 699, 872, 979, 695};
-    // std::list<int> list = {9, 2, 21, 15, 20, 3, 7, 1, 6, 11, 17, 4, 19, 16, 10, 13, 18, 5, 12, 22, 8, 14};                                
+	// std::list<int> list            = {896, 495, 449, 694, 863, 366, 164, 86,  543, 584,
+	// 								  541, 447, 599, 6,   326, 398, 637, 997, 199, 788,
+	// 								  66,  49,  596, 715, 809, 411, 699, 872, 979, 695};
+    std::list<int> list = {9, 2, 21, 15, 20, 3, 7, 1, 6, 11, 17, 4, 19, 16, 10, 13, 18, 5, 12, 22, 8, 14};                                
 	std::list<int> sorted_int_list = MergeInsertionSortList(list);
 
 	std::cout << "sorted_list: " << sorted_int_list << std::endl;

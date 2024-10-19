@@ -310,7 +310,8 @@ void BinarySearch(
 			}
 		}
 		std::size_t next_search_end_idx =
-			std::distance(small_list_to_insert.begin(), std::next(it).base()) + search_end_base + 1;
+			std::distance(small_list_to_insert.begin(), std::next(it).base()) + search_end_base +
+			inserted_before + 2;
 		sorted_list.insert(search_start_itr, DataPair(it->first, it->first));
 		// e.g. sorted_list: { 584, 584 }, { 599, 599 }, { 896, 896 }, { 997, 997 }
 		// に lists: { 863, 896 }, { 715, 997 } を挿入する場合
