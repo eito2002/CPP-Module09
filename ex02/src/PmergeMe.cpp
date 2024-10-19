@@ -299,7 +299,7 @@ void BinarySearch(
 			search_end_itr = std::next(sorted_list.begin(), search_end_idx + inserted_before);
 		}
 
-		// 二分探索を手動で実装
+		// 二分探索
 		while (search_start_itr != search_end_itr) {
 			DataPairList::iterator mid = search_start_itr;
 			std::advance(mid, std::distance(search_start_itr, search_end_itr) / 2);
@@ -425,6 +425,15 @@ DataPairList MergeInsertionSortList(DataPairList &pair_list) {
 	std::size_t search_end_base = 0;
 	for (std::list<DataPairList>::iterator itr = lists.begin(); itr != lists.end(); ++itr) {
 		BinarySearch(sorted_pair_list, *itr, search_end_base);
+		// 挿入した分 + もともとの要素数によるスタート位置のズレ
+		// e.g. sorted_list: { 541, 541 }, { 584, 584 }, { 599, 599 }, { 715, 715 }, { 863, 863 },
+		// { 872, 872 }, { 896, 896 }, { 997, 997 }
+		// lists: { 86, 164 }, { 326, 398 }
+		// lists: { 447, 541 }, { 543, 584 }
+		// を挿入する場合、一個目の挿入後は
+		// sorted_list: { 66, 66 }, { 398, 398 }, { 541, 541 }, { 584, 584 }, { 599, 599 },
+		// { 715, 715 }, { 863, 863 }, { 872, 872 }, { 896, 896 }, { 997, 997 }
+		// 543 の二分探索範囲を 584 までにするために search_end_base を 4 加算する
 		search_end_base += itr->size() * 2;
 	}
 
