@@ -471,14 +471,13 @@ DataPairList MergeInsertionSortList(DataPairList &pair_list) {
 	for (std::list<DataPairList>::iterator itr = lists.begin(); itr != lists.end(); ++itr) {
 		BinarySearch(sorted_pair_list, *itr, search_end_base);
 		// 挿入した分 + もともとの要素数によるスタート位置のズレ
-		// e.g. sorted_list: { 541, 541 }, { 584, 584 }, { 599, 599 }, { 715, 715 }, { 863, 863 },
-		// { 872, 872 }, { 896, 896 }, { 997, 997 }
-		// lists: { 86, 164 }, { 326, 398 }
-		// lists: { 447, 541 }, { 543, 584 }
+		// e.g. sorted_list: { 11, 11 }, { 17, 17 }, { 19, 19 }, { 20, 20 }, { 21, 21 }, { 22, 22 }
+		// lists: { 13, 19 }, { 7, 20 }
+		// lists: { 9, 21 }, { 18, 22 }
 		// を挿入する場合、一個目の挿入後は
-		// sorted_list: { 66, 66 }, { 398, 398 }, { 541, 541 }, { 584, 584 }, { 599, 599 },
-		// { 715, 715 }, { 863, 863 }, { 872, 872 }, { 896, 896 }, { 997, 997 }
-		// 543 の二分探索範囲を 584 までにするために search_end_base を 4 加算する
+		// sorted_list: { 7, 7 }, { 11, 11 }, { 13, 13 }, { 17, 17 }, { 19, 19 }, { 20, 20 },
+		// { 21, 21 }, { 22, 22 }
+		// 18 の二分探索範囲を 22 までにするために search_end_base を 4 加算する
 		search_end_base += itr->size() * 2;
 	}
 
