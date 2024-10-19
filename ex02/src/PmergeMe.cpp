@@ -3,9 +3,25 @@
 
 namespace SortVector {
 
+// static int comparison_count_vec = 0;
+
 struct Data {
 	int         num;
 	std::size_t pair_index;
+
+	// 比較演算子のオーバーロード
+	bool operator<(const Data &other) const {
+		// ++comparison_count_vec;
+		return num < other.num;
+	}
+	bool operator>(const Data &other) const {
+		// ++comparison_count_vec;
+		return num > other.num;
+	}
+	bool operator==(const Data &other) const {
+		// ++comparison_count_vec;
+		return num == other.num && pair_index == other.pair_index;
+	}
 };
 
 typedef std::pair<Data, Data> DataPair;
@@ -87,7 +103,7 @@ void BinarySearch(
 		// 二分探索
 		while (search_start_idx < search_end_idx) {
 			std::size_t mid = search_start_idx + (search_end_idx - search_start_idx) / 2;
-			if (small_vector_to_insert[i - 1].first.num < sorted_vector[mid].first.num) {
+			if (small_vector_to_insert[i - 1].first < sorted_vector[mid].first) {
 				search_end_idx = mid;
 			} else {
 				search_start_idx = mid + 1;
@@ -116,7 +132,7 @@ DataPairVector SplitPairVector(DataPairVector &pair_vector) {
 		// -> { 19, 21 } でペアを作るが,
 		// 19 の pair_index に 1 を, 21 の pair_index に 0 を保持
 		// ペアを作る時のインデックスを保持することで後から取得できるように
-		if (num1.num < num2.num) {
+		if (num1 < num2) {
 			num_pair = DataPair(num1, num2);
 		} else {
 			num_pair = DataPair(num2, num1);
@@ -221,9 +237,25 @@ std::vector<int> PmergeMe::MergeInsertionSortVector(std::vector<int> &vec) {
 
 namespace SortList {
 
+// static int comparison_count_list = 0;
+
 struct Data {
 	int                                          num;
 	std::list< std::pair<Data, Data> >::iterator pair_itr;
+
+	// 比較演算子のオーバーロード
+	bool operator<(const Data &other) const {
+		// ++comparison_count_list;
+		return num < other.num;
+	}
+	bool operator>(const Data &other) const {
+		// ++comparison_count_list;
+		return num > other.num;
+	}
+	bool operator==(const Data &other) const {
+		// ++comparison_count_list;
+		return num == other.num && pair_itr == other.pair_itr;
+	}
 };
 
 typedef std::pair<Data, Data> DataPair;
@@ -310,7 +342,7 @@ void BinarySearch(
 		while (search_start_itr != search_end_itr) {
 			DataPairList::iterator mid = search_start_itr;
 			std::advance(mid, std::distance(search_start_itr, search_end_itr) / 2);
-			if (it->first.num < mid->first.num) {
+			if (it->first < mid->first) {
 				search_end_itr = mid;
 			} else {
 				search_start_itr = ++mid;
@@ -344,7 +376,7 @@ DataPairList SplitPairList(DataPairList &pair_list) {
 		// 元々のベアのイテレーターを保持 e.g. { 9, 21 }, { 13, 19 }
 		// -> { 19, 21 } でペアを作るが,
 		// 19 の pair_itr に　{ 13, 19 } を, 21 の pair_itr に　{ 9, 21 } を保持
-		if (num1.num < num2.num) {
+		if (num1 < num2) {
 			num_pair = DataPair(num1, num2);
 		} else {
 			num_pair = DataPair(num2, num1);
