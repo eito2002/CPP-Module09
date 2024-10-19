@@ -3,7 +3,10 @@
 
 namespace SortVector {
 
-// static int comparison_count_vec = 0;
+// 比較回数取得用
+#ifdef ENABLE_COMPARISON_COUNT
+int comparison_count_vec = 0;
+#endif
 
 struct Data {
 	int         num;
@@ -11,16 +14,10 @@ struct Data {
 
 	// 比較演算子のオーバーロード
 	bool operator<(const Data &other) const {
-		// ++comparison_count_vec;
+#ifdef ENABLE_COMPARISON_COUNT
+		++comparison_count_vec;
+#endif
 		return num < other.num;
-	}
-	bool operator>(const Data &other) const {
-		// ++comparison_count_vec;
-		return num > other.num;
-	}
-	bool operator==(const Data &other) const {
-		// ++comparison_count_vec;
-		return num == other.num && pair_index == other.pair_index;
 	}
 };
 
@@ -232,6 +229,11 @@ DataPairVector MergeInsertionSortVector(DataPairVector &pair_vector) {
 std::vector<int> MergeInsertionSortVector(std::vector<int> &vec) {
 	DataPairVector data_vector   = ConvertToDataPairVector(vec);
 	DataPairVector sorted_vector = MergeInsertionSortVector(data_vector);
+
+#ifdef ENABLE_COMPARISON_COUNT
+	std::cout << "comparison_count_vec:  " << comparison_count_vec << std::endl;
+#endif
+
 	return ConvertToIntVector(sorted_vector);
 }
 
@@ -243,7 +245,10 @@ std::vector<int> PmergeMe::MergeInsertionSortVector(std::vector<int> &vec) {
 
 namespace SortList {
 
-// static int comparison_count_list = 0;
+// 比較回数取得用
+#ifdef ENABLE_COMPARISON_COUNT
+int comparison_count_list = 0;
+#endif
 
 struct Data {
 	int                                          num;
@@ -251,16 +256,10 @@ struct Data {
 
 	// 比較演算子のオーバーロード
 	bool operator<(const Data &other) const {
-		// ++comparison_count_list;
+#ifdef ENABLE_COMPARISON_COUNT
+		++comparison_count_list;
+#endif
 		return num < other.num;
-	}
-	bool operator>(const Data &other) const {
-		// ++comparison_count_list;
-		return num > other.num;
-	}
-	bool operator==(const Data &other) const {
-		// ++comparison_count_list;
-		return num == other.num && pair_itr == other.pair_itr;
 	}
 };
 
@@ -487,6 +486,11 @@ DataPairList MergeInsertionSortList(DataPairList &pair_list) {
 std::list<int> MergeInsertionSortList(std::list<int> &list) {
 	DataPairList data_list   = ConvertToDataPairList(list);
 	DataPairList sorted_list = MergeInsertionSortList(data_list);
+
+#ifdef ENABLE_COMPARISON_COUNT
+	std::cout << "comparison_count_list: " << comparison_count_list << std::endl;
+#endif
+
 	return ConvertToIntList(sorted_list);
 }
 

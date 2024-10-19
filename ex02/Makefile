@@ -27,6 +27,10 @@ ifneq ($(filter debug test, $(MAKECMDGOALS)), )
 	DEF			+= -D DEBUG_MODE=1
 endif
 
+ifneq ($(ENABLE_COMPARISON_COUNT),)
+    DEF         += -D ENABLE_COMPARISON_COUNT=$(ENABLE_COMPARISON_COUNT)
+endif
+
 SRCS			= $(addprefix $(SRCDIR)/, $(SRC))
 OBJS			= $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.cpp=.o)))
 DEPS			= $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.cpp=.d)))
@@ -90,6 +94,10 @@ test_fail:
 	@echo "\033[41mError case: Over than IntMax\033[m"
 	-./$(NAME) 2147483648 126 2121 3223
 	@echo "\033[2;3mError handling tests finished\033[m"
+
+count:
+	@echo "\033[34;1;3mCounting the number of comparisons\033[m"
+	@$(MAKE) test ENABLE_COMPARISON_COUNT=1
 
 $(NAME): $(OBJS)
 	$(CXX) $(LDFLAGS) $(OBJS) -o $(NAME)
