@@ -6,8 +6,6 @@ namespace SortVector {
 struct Data {
 	int         num;
 	std::size_t pair_index;
-
-	// Data(int n, std::size_t p) : num(n), pair_index(p) {}
 };
 
 typedef std::pair<Data, Data> DataPair;
@@ -124,8 +122,6 @@ DataPairVector SplitPairVector(DataPairVector &pair_vector) {
 			num_pair = DataPair(num2, num1);
 		}
 		pairs.push_back(num_pair);
-		// std::cout << "num_pair: { " << num_pair.first.num << ", " << num_pair.second.num << " }"
-		// 		  << std::endl;
 	}
 	return pairs;
 }
@@ -157,7 +153,6 @@ MakeSmallVector(DataPairVector &sorted, const DataPairVector &large, DataPairVec
 	} else {
 		for (std::size_t i = 0; i < sorted.size(); i++) {
 			const std::size_t pre_index = sorted[i].first.pair_index;
-			// std::cout << "pre_index: " << pre_index << std::endl;
 			sorted[i].first.pair_index  = large[pre_index].second.pair_index;
 			sorted[i].second.pair_index = large[pre_index].second.pair_index;
 			// 1個前の pair_index を次の pair_index に更新
@@ -389,7 +384,6 @@ MakeSmallList(DataPairList &sorted, const DataPairList &large, DataPairList &ini
 	} else {
 		for (DataPairList::iterator it = sorted.begin(); it != sorted.end(); ++it) {
 			const DataPairList::iterator pre_itr = it->first.pair_itr; // firstでもsecondでも良い
-			// std::cout << "pre_itr: " <<   pre_itr->first.num << std::endl;
 			small_list.push_back(*pre_itr);
 			it->first.pair_itr  = pre_itr->second.pair_itr;
 			it->second.pair_itr = pre_itr->second.pair_itr;
@@ -429,8 +423,7 @@ DataPairList MergeInsertionSortList(DataPairList &pair_list) {
 	DataPairList large_half_pairs = SplitPairList(pair_list);
 	DataPairList sorted_pair_list = MergeInsertionSortList(large_half_pairs);
 	DataPairList small_half_pairs = MakeSmallList(sorted_pair_list, large_half_pairs, pair_list);
-	// std::cout << "small_half_pairs: " << small_half_pairs << std::endl;
-	DataPair pair(small_half_pairs.front().first, small_half_pairs.front().first);
+	DataPair     pair(small_half_pairs.front().first, small_half_pairs.front().first);
 	sorted_pair_list.insert(sorted_pair_list.begin(), pair);
 	small_half_pairs.pop_front();
 	std::list<DataPairList> lists = GroupList(small_half_pairs);
