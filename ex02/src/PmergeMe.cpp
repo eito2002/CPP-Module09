@@ -114,8 +114,14 @@ void BinarySearch(
 			sorted_vector.begin() + search_start_idx,
 			DataPair(small_vector_to_insert[i - 1].first, small_vector_to_insert[i - 1].first)
 		);
-
-		std::size_t next_search_end_idx = i + search_end_base + inserted_before + 1;
+		// e.g. sorted_list: { 11, 11 }, { 17, 17 }, { 19, 19 }, { 20, 20 }, { 21, 21 }, { 22, 22 }
+		// に lists: { 13, 19 }, { 7, 20 } を挿入する場合
+		// 7 は 11 の前に挿入、この時のdistanceは 1
+		// ({ 7, 7 }, { 11, 11 }, { 17, 17 }, { 19, 19 }, { 20, 20 }, { 21, 21 }, { 22, 22 })
+		// 次の挿入する 13 のend_indexは 19 の位置であり、元々は 2 だったが 7 を挿入したため
+		// inserted_beforeを 1 増やして 3 になる
+		//  -> next_end が 2 なので inserted_before を増やすのは insert_index が 0, 1, 2まで
+		std::size_t next_search_end_idx = i + search_end_base + inserted_before;
 		if (search_start_idx <= next_search_end_idx) {
 			inserted_before += 1;
 		}
@@ -355,6 +361,7 @@ void BinarySearch(
 		// ({ 7, 7 }, { 11, 11 }, { 17, 17 }, { 19, 19 }, { 20, 20 }, { 21, 21 }, { 22, 22 })
 		// 次の挿入する 13 のend_indexは 19 の位置であり、元々は 2 だったが 7 を挿入したため
 		// inserted_beforeを 1 増やして 3 になる
+		// -> next_end_idx が 2 なので inserted_before を増やすのは distance が 1, 2, 3まで
 		std::size_t next_search_end_idx =
 			std::distance(small_list_to_insert.begin(), std::next(it).base()) + search_end_base +
 			inserted_before + inserted_before + 1;
