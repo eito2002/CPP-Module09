@@ -15,8 +15,8 @@ class PmergeMe {
 	~PmergeMe();
 
   public:
-	static std::list<int>   MergeInsertionSortList(std::list<int> &list);
-	static std::vector<int> MergeInsertionSortVector(std::vector<int> &vec);
+	static std::list<int>   MergeInsertionSortList(std::list<int> &);
+	static std::vector<int> MergeInsertionSortVector(std::vector<int> &);
 };
 
 namespace utils {
