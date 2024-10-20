@@ -14,20 +14,24 @@ void RPN::PushAndCalculateNumbers(const std::string &line) {
 	std::stringstream iss(line);
 	std::string       token;
 
-	stack_ = std::stack<int>();
 	while (iss >> token) {
 		if (token.length() >= 2) {
-			throw std::runtime_error("Error");
+			throw std::runtime_error("Error: Invalid token length");
 		} else if (std::isdigit(token[0])) {
 			stack_.push(std::atoi(token.c_str()));
-		} else if (OP.find(token[0]) != std::string::npos && stack_.size() >= 2)
+		} else if (OP.find(token[0]) != std::string::npos) {
+			if (stack_.size() < 2) {
+				throw std::runtime_error("Error: Not enough operands for operation");
+			}
 			Calculate(token);
+		} else {
+			throw std::runtime_error("Error: Invalid token");
+		}
 	}
-	if (stack_.size() == 1)
-		std::cout << stack_.top() << std::endl;
-	else {
-		throw std::runtime_error("Error");
+	if (stack_.size() != 1) {
+		throw std::runtime_error("Error: Invalid RPN expression");
 	}
+	std::cout << stack_.top() << std::endl;
 }
 
 static int Add(int a, int b) {

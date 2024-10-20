@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
 	try {
 		rpn.PushAndCalculateNumbers(argv[1]);
 	} catch (const std::exception &e) {
-		std::cerr << e.what() << '\n';
+		std::cerr << "Error" << std::endl;
 		return EXIT_FAILURE;
 	}
 	return EXIT_SUCCESS;
