@@ -13,11 +13,14 @@ namespace {
 #define DAY_MAX   31
 
 bool StrIsNumeric(const std::string &str) {
-	if (str.empty())
+	if (str.empty()) {
 		return false;
-	for (std::string::const_iterator it = str.begin(); it != str.end(); ++it)
-		if (!std::isdigit(*it))
+	}
+	for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
+		if (!std::isdigit(*it)) {
 			return false;
+		}
+	}
 	return true;
 }
 
@@ -27,20 +30,23 @@ bool IsValidDate(const std::string &date) {
 	std::getline(ss, year, '-');
 	std::getline(ss, month, '-');
 	std::getline(ss, day, '-');
-	if (year.length() != 4 || month.length() != 2 || day.length() != 2)
+	if (year.length() != 4 || month.length() != 2 || day.length() != 2) {
 		return false;
-	else if (!StrIsNumeric(year) || !StrIsNumeric(month) || !StrIsNumeric(day))
+	} else if (!StrIsNumeric(year) || !StrIsNumeric(month) || !StrIsNumeric(day)) {
 		return false;
+	}
 
 	int year_int, month_int, day_int;
 	std::stringstream(year) >> year_int;
 	std::stringstream(month) >> month_int;
 	std::stringstream(day) >> day_int;
 	if (year_int < YEAR_MIN || month_int < MONTH_MIN || month_int > MONTH_MAX ||
-		day_int < DAY_MIN || day_int > DAY_MAX)
+		day_int < DAY_MIN || day_int > DAY_MAX) {
 		return false;
-	else if (year_int == YEAR_MIN && month_int == MONTH_MIN && day_int == DAY_MIN) // for 2009-01-01
+	} else if (year_int == YEAR_MIN && month_int == MONTH_MIN &&
+			   day_int == DAY_MIN) { // for 2009-01-01
 		return false;
+	}
 	return true;
 }
 
@@ -48,8 +54,9 @@ bool IsValidValue(const std::string &value) {
 	std::stringstream ss(value);
 	float             float_value;
 	char              remaining;
-	if (!(ss >> float_value) || (ss >> remaining))
+	if (!(ss >> float_value) || (ss >> remaining)) {
 		return false;
+	}
 	return true;
 }
 
@@ -99,11 +106,13 @@ void BitcoinExchange::CalculateLine(const std::string &line) {
 	std::string value_str = line.substr(pos + 2);
 	float       value     = std::atof(value_str.c_str());
 
-	if (!CheckError(date, value_str, pos))
+	if (!CheckError(date, value_str, pos)) {
 		return;
+	}
 	BTCDataMap::iterator it = data_.lower_bound(date);
-	if (it == data_.end())
+	if (it == data_.end()) {
 		std::cout << date << " => " << value << " = " << value * (*--it).second << std::endl;
-	else
+	} else {
 		std::cout << date << " => " << value << " = " << value * (*it).second << std::endl;
+	}
 }

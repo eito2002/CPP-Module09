@@ -19,9 +19,11 @@ int main(int argc, char *argv[]) {
 	std::string     line;
 	BitcoinExchange bit("cpp_09/data.csv");
 	std::getline(file, line); // skip the first line
-	while (std::getline(file, line))
-		if (line != "")
+	while (std::getline(file, line)) {
+		if (line != "") {
 			bit.CalculateLine(line);
+		}
+	}
 	file.close();
 	return EXIT_SUCCESS;
 }
