@@ -106,11 +106,11 @@ count: fclean
 	@echo "\n\033[33;42m[TEST5]\033[m"
 	-./$(NAME) 896 495 449 694 863 366 164 86 543 584 541 447 599 6 326 398 637 997 199 788 66 49 596 715 809 411 699 872 979 695
 	@echo "\n\033[33;42m[TEST6]\033[m"
-	-./$(NAME) `jot -r 3000 1 100000 | tr '\n' ' '` > $(RESULT)_3000
+	-./$(NAME) `shuf -i 1-100000 -n 3000 | tr '\n' ' '` > $(RESULT)_3000
 	@echo "\n\033[33;42m[RANDOM TEST1]\033[m"
-	-./$(NAME) `jot -r 6000 1 100000 | tr '\n' ' '` > $(RESULT)_6000
+	-./$(NAME) `shuf -i 1-100000 -n 6000 | tr '\n' ' '` > $(RESULT)_6000
 	@echo "\n\033[33;42m[RANDOM TEST2]\033[m"
-	-./$(NAME) `jot -r 10000 1 100000 | tr '\n' ' '` > $(RESULT)_10000
+	-./$(NAME) `shuf -i 1-100000 -n 10000 | tr '\n' ' '` > $(RESULT)_10000
 
 $(NAME): $(OBJS)
 	$(CXX) $(LDFLAGS) $(OBJS) -o $(NAME)
