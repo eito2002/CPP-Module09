@@ -1,4 +1,6 @@
 #include "PmergeMe.hpp"
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 
 namespace {

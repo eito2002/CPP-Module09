@@ -1,4 +1,5 @@
 #include "PmergeMe.hpp"
+#include <cmath>
 #include <iostream>
 
 namespace SortVector {
@@ -28,7 +29,7 @@ typedef std::vector<Data>     DataVector;
 std::ostream &operator<<(std::ostream &os, const std::vector<int> &v) {
 	for (std::vector<int>::const_iterator it = v.begin(); it != v.end(); ++it) {
 		os << *it;
-		if (std::next(it) != v.end())
+		if (utils::next(it) != v.end())
 			os << ", ";
 	}
 	return os;
@@ -42,7 +43,7 @@ std::ostream &operator<<(std::ostream &os, const Data &data) {
 std::ostream &operator<<(std::ostream &os, const DataVector &v) {
 	for (DataVector::const_iterator it = v.begin(); it != v.end(); ++it) {
 		os << it->num;
-		if (std::next(it) != v.end())
+		if (utils::next(it) != v.end())
 			os << ", ";
 	}
 	return os;
@@ -51,7 +52,7 @@ std::ostream &operator<<(std::ostream &os, const DataVector &v) {
 std::ostream &operator<<(std::ostream &os, const std::vector<DataVector> &v) {
 	for (std::vector<DataVector>::const_iterator it = v.begin(); it != v.end(); ++it) {
 		os << *it;
-		if (std::next(it) != v.end())
+		if (utils::next(it) != v.end())
 			os << ", ";
 	}
 	return os;
@@ -60,7 +61,7 @@ std::ostream &operator<<(std::ostream &os, const std::vector<DataVector> &v) {
 std::ostream &operator<<(std::ostream &os, const DataPairVector &vec) {
 	for (DataPairVector::const_iterator it = vec.begin(); it != vec.end(); ++it) {
 		os << "{ " << it->first.num << ", " << it->second.num << " }";
-		if (std::next(it) != vec.end())
+		if (utils::next(it) != vec.end())
 			os << ", ";
 	}
 	return os;
@@ -340,7 +341,7 @@ void BinarySearch(
 		if (search_end_idx >= sorted_list.size()) {
 			search_end_itr = sorted_list.end();
 		} else {
-			search_end_itr = std::next(sorted_list.begin(), search_end_idx);
+			search_end_itr = utils::next(sorted_list.begin(), search_end_idx);
 		}
 
 		// 二分探索
@@ -362,7 +363,7 @@ void BinarySearch(
 		// inserted_beforeを 1 増やして 3 になる
 		// -> next_end_idx が 2 なので inserted_before を増やすのは distance が 1, 2, 3まで
 		std::size_t next_search_end_idx =
-			std::distance(small_list_to_insert.begin(), std::next(it).base()) + search_end_base +
+			std::distance(small_list_to_insert.begin(), utils::next(it).base()) + search_end_base +
 			inserted_before + inserted_before + 1;
 		if (static_cast<std::size_t>(std::distance(sorted_list.begin(), search_end_itr)) <=
 			next_search_end_idx + 1) {
@@ -374,10 +375,10 @@ void BinarySearch(
 DataPairList SplitPairList(DataPairList &pair_list) {
 	DataPairList pairs;
 	for (DataPairList::iterator it = pair_list.begin();
-		 it != pair_list.end() && std::next(it) != pair_list.end();
+		 it != pair_list.end() && utils::next(it) != pair_list.end();
 		 std::advance(it, 2)) {
 		Data     num1 = {it->second.num, it};
-		Data     num2 = {std::next(it)->second.num, std::next(it)};
+		Data     num2 = {utils::next(it)->second.num, utils::next(it)};
 		DataPair num_pair(num1, num2);
 		// 元々のベアのイテレーターを保持 e.g. { 9, 21 }, { 13, 19 }
 		// -> { 19, 21 } でペアを作るが,
@@ -434,8 +435,8 @@ MakeSmallList(DataPairList &sorted, const DataPairList &large, DataPairList &ini
 	}
 	// ペアが組めずに残った要素をsmallに追加
 	if (init_nums.size() % 2 != 0) {
-		Data last     = std::prev(init_nums.end())->second;
-		last.pair_itr = std::prev(init_nums.end());
+		Data last     = utils::prev(init_nums.end())->second;
+		last.pair_itr = utils::prev(init_nums.end());
 		DataPair pair(last, last);
 		small_list.push_back(pair);
 	}

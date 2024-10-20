@@ -19,4 +19,20 @@ class PmergeMe {
 	static std::vector<int> MergeInsertionSortVector(std::vector<int> &vec);
 };
 
+namespace utils {
+
+template <typename Iterator>
+Iterator next(Iterator it, typename std::iterator_traits<Iterator>::difference_type n = 1) {
+	std::advance(it, n);
+	return it;
+}
+
+template <typename Iterator>
+Iterator prev(Iterator it, typename std::iterator_traits<Iterator>::difference_type n = 1) {
+	std::advance(it, -n);
+	return it;
+}
+
+} // namespace utils
+
 #endif
