@@ -110,9 +110,10 @@ void BitcoinExchange::CalculateLine(const std::string &line) {
 		return;
 	}
 	BTCDataMap::iterator it = data_.lower_bound(date);
-	if (it == data_.end()) {
+	if (it->first != date || it == data_.end()) {
+		// DBに存在しない日付の場合または最後の日付の場合、それに前の日付でそれに最も近いを使用する
 		std::cout << date << " => " << value << " = " << value * (*--it).second << std::endl;
 	} else {
-		std::cout << date << " => " << value << " = " << value * (*it).second << std::endl;
+		std::cout << date << " => " << value << " = " << value * it->second << std::endl;
 	}
 }
