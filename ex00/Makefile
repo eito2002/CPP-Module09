@@ -13,14 +13,11 @@ OBJDIR			= ./obj
 CXX				= c++
 RM				= rm
 
-CXXFLAGS		= -Wall -Wextra -Werror -std=c++98 -MMD -MP
+CXXFLAGS		= -Wall -Wextra -Werror -std=c++98 -pedantic -MMD -MP
 INCLUDES		= -I$(INCDIR)
 RMFLAGS			= -rf
-DEBUGCFLAGS		= -g -ggdb -fsanitize=address -fno-omit-frame-pointer
-ifneq ($(OS), Darwin)
-	DEBUGCFLAGS	+= -fstack-usage
-endif
-DEBUGLDFLAGS	= -fsanitize=address
+DEBUGCFLAGS		= -g -ggdb -ftrapv -fstack-protector-all -fsanitize=address,undefined -fno-omit-frame-pointer
+DEBUGLDFLAGS	= -fsanitize=address,undefined
 
 ifneq ($(filter debug test, $(MAKECMDGOALS)), )
 	CXXFLAGS	+= $(DEBUGCFLAGS)
@@ -66,8 +63,8 @@ $(NAME): $(DB_FILE) $(OBJS)
 	$(CXX) $(LDFLAGS) $(OBJS) -o $(NAME)
 
 $(DB_FILE):
-	@curl -O https://cdn.intra.42.fr/document/document/25726/cpp_09.tgz
-	@tar -xzvf cpp_09.tgz
+	@curl -O https://cdn.intra.42.fr/document/document/27567/cpp_09.tgz
+	@tar -xzf cpp_09.tgz
 	@rm -rf cpp_09.tgz
 
 $(OBJDIR):

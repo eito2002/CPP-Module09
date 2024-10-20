@@ -12,14 +12,11 @@ OBJDIR			= ./obj
 CXX				= c++
 RM				= rm
 
-CXXFLAGS		= -Wall -Wextra -Werror -std=c++98 -MMD -MP
+CXXFLAGS		= -Wall -Wextra -Werror -std=c++98 -pedantic -MMD -MP
 INCLUDES		= -I$(INCDIR)
 RMFLAGS			= -rf
-DEBUGCFLAGS		= -g -ggdb -fsanitize=address -fno-omit-frame-pointer
-ifneq ($(OS), Darwin)
-	DEBUGCFLAGS	+= -fstack-usage
-endif
-DEBUGLDFLAGS	= -fsanitize=address
+DEBUGCFLAGS		= -g -ggdb -ftrapv -fstack-protector-all -fsanitize=address,undefined -fno-omit-frame-pointer
+DEBUGLDFLAGS	= -fsanitize=address,undefined
 
 ifneq ($(filter debug test, $(MAKECMDGOALS)), )
 	CXXFLAGS	+= $(DEBUGCFLAGS)
@@ -61,16 +58,16 @@ test_success:
 	@echo "\n\033[33;42m[TEST5]\033[m"
 	-./$(NAME) 896 495 449 694 863 366 164 86 543 584 541 447 599 6 326 398 637 997 199 788 66 49 596 715 809 411 699 872 979 695
 	@echo "\n\033[33;42m[TEST6]\033[m"
-	-./$(NAME) `jot -r 3000 1 100000 | tr '\n' ' '` > $(RESULT)
+	-./$(NAME) `shuf -i 1-100000 -n 3000 | tr '\n' ' '` > $(RESULT)
 	@echo "\n\033[33;42m[RANDOM TEST1]\033[m"
-	-./$(NAME) `jot -r 6000 1 100000 | tr '\n' ' '` | awk '/After:/ { for(i=2;i<=NF;i++) print $i }' | sort -n -c
+	-./$(NAME) `shuf -i 1-100000 -n 6000 | tr '\n' ' '` | awk '/After:/ { for(i=2;i<=NF;i++) print $i }' | sort -n -c
 	@if [ $$? -eq 0 ]; then \
         echo "Success"; \
     else \
         echo "Failure"; \
     fi
 	@echo "\n\033[33;42m[RANDOM TEST2]\033[m"
-	-./$(NAME) `jot -r 10000 1 100000 | tr '\n' ' '` | awk '/After:/ { for(i=2;i<=NF;i++) print $i }' | sort -n -c
+	-./$(NAME) `shuf -i 1-100000 -n 10000 | tr '\n' ' '` | awk '/After:/ { for(i=2;i<=NF;i++) print $i }' | sort -n -c
 	@if [ $$? -eq 0 ]; then \
         echo "Success"; \
     else \
