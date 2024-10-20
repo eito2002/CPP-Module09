@@ -48,7 +48,7 @@ static int Multiply(int a, int b) {
 
 static int Divide(int a, int b) {
 	if (b == 0) {
-		throw std::runtime_error("Error");
+		throw std::runtime_error("Error: Division by zero");
 	}
 	return a / b;
 }
@@ -58,23 +58,23 @@ static void CheckOverFlow(int a, int b, char op) {
 	case '+':
 		if ((b > 0 && a > std::numeric_limits<int>::max() - b) ||
 			(b < 0 && a < std::numeric_limits<int>::min() - b))
-			throw std::overflow_error("Error");
+			throw std::overflow_error("Error: Overflow");
 		break;
 	case '-':
 		if ((b < 0 && a > std::numeric_limits<int>::max() + b) ||
 			(b > 0 && a < std::numeric_limits<int>::min() + b))
-			throw std::overflow_error("Error");
+			throw std::overflow_error("Error: Overflow");
 		break;
 	case '*':
 		if ((a > 0 && b > 0 && a > std::numeric_limits<int>::max() / b) ||
 			(a > 0 && b < 0 && b < std::numeric_limits<int>::min() / a) ||
 			(a < 0 && b > 0 && a < std::numeric_limits<int>::min() / b) ||
 			(a < 0 && b < 0 && a < std::numeric_limits<int>::max() / b))
-			throw std::overflow_error("Error");
+			throw std::overflow_error("Error: Overflow");
 		break;
 	case '/':
 		if (a == std::numeric_limits<int>::min() && b == -1)
-			throw std::overflow_error("Error");
+			throw std::overflow_error("Error: Overflow");
 		break;
 	default:
 		break;
