@@ -2,6 +2,7 @@
 #define RPN_HPP
 
 #include <stack>
+#include <string>
 
 #define DISALLOW_COPY_AND_ASSIGN(TypeName)                                                         \
 	TypeName(const TypeName &);                                                                    \

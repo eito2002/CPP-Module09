@@ -2,6 +2,7 @@
 #define BITCOIN_EXCHANGE_HPP
 
 #include <map>
+#include <string>
 
 #define DISALLOW_COPY_AND_ASSIGN(TypeName)                                                         \
 	TypeName(const TypeName &);                                                                    \

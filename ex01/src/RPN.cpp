@@ -1,5 +1,7 @@
 #include "RPN.hpp"
+#include <cstdlib>
 #include <iostream>
+#include <limits>
 #include <sstream>
 
 const std::string RPN::OP = "+-/*";
