@@ -56,15 +56,15 @@ bool IsValidValue(const std::string &value) {
 bool CheckError(const std::string &date, const std::string &value_str, size_t pos) {
 	float value = std::atof(value_str.c_str());
 	if (pos == std::string::npos || !IsValidDate(date)) {
-		std::cout << "Error: bad input"
+		std::cerr << "Error: bad input"
 				  << " => " << date << std::endl;
 		return false;
 	}
 	if (value <= 0 || value_str.find('|') != std::string::npos || !IsValidValue(value_str)) {
-		std::cout << "Error: not a positive number." << std::endl;
+		std::cerr << "Error: not a positive number." << std::endl;
 		return false;
 	} else if (value > 1000) {
-		std::cout << "Error: too large a number." << std::endl;
+		std::cerr << "Error: too large a number." << std::endl;
 		return false;
 	}
 	return true;
