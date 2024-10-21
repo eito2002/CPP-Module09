@@ -98,7 +98,7 @@ void BinarySearch(
 			search_end_idx = sorted_vector.size();
 		}
 
-		// 二分探索
+		// 二分探索 (start_idx から end_idx まで、end_idx は含まない)
 		while (search_start_idx < search_end_idx) {
 			std::size_t mid = search_start_idx + (search_end_idx - search_start_idx) / 2;
 			if (small_vector_to_insert[i - 1].first < sorted_vector[mid].first) {
@@ -107,7 +107,6 @@ void BinarySearch(
 				search_start_idx = mid + 1;
 			}
 		}
-
 		sorted_vector.insert(
 			sorted_vector.begin() + search_start_idx,
 			DataPair(small_vector_to_insert[i - 1].first, small_vector_to_insert[i - 1].first)
@@ -344,7 +343,7 @@ void BinarySearch(
 			search_end_itr = utils::next(sorted_list.begin(), search_end_idx);
 		}
 
-		// 二分探索
+		// 二分探索 (start_itr から end_itr まで、end_itr は含まない)
 		while (search_start_itr != search_end_itr) {
 			DataPairList::iterator mid = search_start_itr;
 			std::advance(mid, std::distance(search_start_itr, search_end_itr) / 2);
