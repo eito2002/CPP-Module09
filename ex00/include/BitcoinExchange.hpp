@@ -3,13 +3,15 @@
 
 #include <map>
 #include <string>
+#include <utility> // std::pair
 
 #define DISALLOW_COPY_AND_ASSIGN(TypeName)                                                         \
 	TypeName(const TypeName &);                                                                    \
 	void operator=(const TypeName &)
 
 class BitcoinExchange {
-	typedef std::map<std::string, float> BTCDataMap;
+	typedef std::map<std::string, float>        BTCDataMap;
+	typedef std::pair<std::string, std::string> DateValuePair;
 
   private:
 	BTCDataMap data_;

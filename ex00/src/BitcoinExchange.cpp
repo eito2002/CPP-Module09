@@ -12,6 +12,25 @@ namespace {
 #define DAY_MIN   1
 #define DAY_MAX   31
 
+std::string Trim(const std::string &str, const std::string &to_trim) {
+	std::size_t first = str.find_first_not_of(to_trim);
+	if (first == std::string::npos) {
+		return "";
+	}
+	std::size_t last = str.find_last_not_of(to_trim);
+	return str.substr(first, last - first + 1);
+}
+
+std::pair<std::string, std::string> SplitStringToPair(const std::string &str, char delimiter) {
+	size_t pos = str.find(delimiter);
+	if (pos == std::string::npos || str.find(delimiter, pos + 1) != std::string::npos) {
+		return std::make_pair(str.substr(0, pos), "");
+	}
+	std::string first  = str.substr(0, pos);
+	std::string second = str.substr(pos + 1);
+	return std::make_pair(first, second);
+}
+
 bool StrIsNumeric(const std::string &str) {
 	if (str.empty()) {
 		return false;
@@ -60,14 +79,19 @@ bool IsValidValue(const std::string &value) {
 	return true;
 }
 
-bool CheckError(const std::string &date, const std::string &value_str, size_t pos) {
-	float value = std::atof(value_str.c_str());
-	if (pos == std::string::npos || !IsValidDate(date)) {
+bool CheckError(const std::string &date, const std::string &value_str) {
+	if (value_str.empty()) {
 		std::cerr << "Error: bad input"
 				  << " => " << date << std::endl;
 		return false;
 	}
-	if (value <= 0 || value_str.find('|') != std::string::npos || !IsValidValue(value_str)) {
+	float value = std::atof(value_str.c_str());
+	if (!IsValidDate(date)) {
+		std::cerr << "Error: bad input"
+				  << " => " << date << std::endl;
+		return false;
+	}
+	if (value <= 0 || !IsValidValue(value_str)) {
 		std::cerr << "Error: not a positive number." << std::endl;
 		return false;
 	} else if (value > 1000) {
@@ -101,19 +125,23 @@ void BitcoinExchange::ParseDataFile(const std::string &file_path) {
 }
 
 void BitcoinExchange::CalculateLine(const std::string &line) {
-	size_t      pos       = line.find_first_of('|');
-	std::string date      = line.substr(0, pos - 1);
-	std::string value_str = line.substr(pos + 2);
-	float       value     = std::atof(value_str.c_str());
+	DateValuePair date_value_pair = SplitStringToPair(line, '|');
+	std::string   date            = Trim(date_value_pair.first, " \t");
+	std::string   value_str       = Trim(date_value_pair.second, " \t");
+	float         value           = std::atof(value_str.c_str());
 
-	if (!CheckError(date, value_str, pos)) {
+	if (!CheckError(date, value_str)) {
 		return;
 	}
 	BTCDataMap::iterator it = data_.lower_bound(date);
 	if (it == data_.end() || it->first != date) {
-		// DBに存在しない日付の場合または最後の日付の場合、それに前の日付でそれに最も近いを使用する
-		// DBの一番最初より前の日付は他のところでエラー
-		std::cout << date << " => " << value << " = " << value * (*--it).second << std::endl;
+		if (it != data_.begin()) {
+			// DBに存在しない日付の場合または最後の日付の場合、それに前の日付でそれに最も近いを使用する
+			std::cout << date << " => " << value << " = " << value * (*--it).second << std::endl;
+		} else {
+			// DBの一番最初より前、実際には他のところで弾かれる
+			std::cerr << "Error: date out of range" << std::endl;
+		}
 	} else {
 		std::cout << date << " => " << value << " = " << value * it->second << std::endl;
 	}
