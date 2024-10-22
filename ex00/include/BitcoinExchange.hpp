@@ -10,10 +10,10 @@
 	void operator=(const TypeName &)
 
 class BitcoinExchange {
+  private:
 	typedef std::map<std::string, float>        BTCDataMap;
 	typedef std::pair<std::string, std::string> DateValuePair;
 
-  private:
 	BTCDataMap data_;
 	DISALLOW_COPY_AND_ASSIGN(BitcoinExchange);
 	void ParseDataFile(const std::string &);
