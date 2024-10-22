@@ -24,7 +24,7 @@ std::string Trim(const std::string &str, const std::string &to_trim) {
 std::pair<std::string, std::string> SplitStringToPair(const std::string &str, char delimiter) {
 	size_t pos = str.find(delimiter);
 	if (pos == std::string::npos || str.find(delimiter, pos + 1) != std::string::npos) {
-		return std::make_pair(str.substr(0, pos), "");
+		return std::make_pair(str, "");
 	}
 	std::string first  = str.substr(0, pos);
 	std::string second = str.substr(pos + 1);
@@ -80,11 +80,6 @@ bool IsValidValue(const std::string &value) {
 }
 
 bool CheckError(const std::string &date, const std::string &value_str) {
-	if (value_str.empty()) {
-		std::cerr << "Error: bad input"
-				  << " => " << date << std::endl;
-		return false;
-	}
 	float value = std::atof(value_str.c_str());
 	if (!IsValidDate(date)) {
 		std::cerr << "Error: bad input"
