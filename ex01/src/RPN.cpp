@@ -32,6 +32,7 @@ void RPN::PushAndCalculateNumbers(const std::string &line) {
 		throw std::runtime_error("Error: Invalid RPN expression");
 	}
 	std::cout << stack_.top() << std::endl;
+	stack_.pop();
 }
 
 static int Add(int a, int b) {
