@@ -8,9 +8,8 @@ int main(int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 
-	RPN rpn;
 	try {
-		rpn.PushAndCalculateNumbers(argv[1]);
+		RPN::PushAndCalculateNumbers(argv[1]);
 	} catch (const std::exception &e) {
 		std::cerr << "Error" << std::endl;
 		return EXIT_FAILURE;
