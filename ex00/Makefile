@@ -18,6 +18,7 @@ date | value
 2012-01-11 | 2147483648
 
 2022-03-29 | 1
+2022-03-30 | 1
 2025-01-01 | 1
 2009-01-03 | 1
 2009-01-01 | 1
@@ -87,7 +88,7 @@ test_fail:
 	@echo "\033[41mError case: Invalid file\033[m"
 	-./$(NAME) noooo.txt
 	@echo "\033[41mError case: Multiple arguments\033[m"
-	-./$(NAME) $(TEST_INPUT) test.txt
+	-./$(NAME) $(TEST_INPUT) $(TEST_INPUT)
 	@echo "\033[2;3mError handling tests finished\033[m"
 
 $(NAME): $(DB) $(OBJS)
