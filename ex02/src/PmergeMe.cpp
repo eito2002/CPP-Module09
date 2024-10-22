@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-namespace SortVector {
+namespace sort_vector {
 
 // 比較回数取得用
 #ifdef ENABLE_COMPARISON_COUNT
@@ -237,13 +237,13 @@ std::vector<int> MergeInsertionSortVector(std::vector<int> &vec) {
 	return ConvertToIntVector(sorted_vector);
 }
 
-} // namespace SortVector
+} // namespace sort_vector
 
 std::vector<int> PmergeMe::MergeInsertionSortVector(std::vector<int> &vec) {
-	return SortVector::MergeInsertionSortVector(vec);
+	return sort_vector::MergeInsertionSortVector(vec);
 }
 
-namespace SortList {
+namespace sort_list {
 
 // 比較回数取得用
 #ifdef ENABLE_COMPARISON_COUNT
@@ -494,8 +494,8 @@ std::list<int> MergeInsertionSortList(std::list<int> &list) {
 	return ConvertToIntList(sorted_list);
 }
 
-} // namespace SortList
+} // namespace sort_list
 
 std::list<int> PmergeMe::MergeInsertionSortList(std::list<int> &list) {
-	return SortList::MergeInsertionSortList(list);
+	return sort_list::MergeInsertionSortList(list);
 }
