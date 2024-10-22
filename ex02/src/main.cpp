@@ -1,6 +1,6 @@
 #include "PmergeMe.hpp"
-#include <cstdlib>
-#include <cstring>
+#include <cstdlib> // EXIT_*, std::atoi
+#include <cstring> // std::strcmp
 #include <iostream>
 
 namespace {

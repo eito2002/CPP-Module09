@@ -1,5 +1,5 @@
 #include "PmergeMe.hpp"
-#include <cmath>
+#include <cmath> // std::pow
 #include <iostream>
 
 namespace sort_vector {

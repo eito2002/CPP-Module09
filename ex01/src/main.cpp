@@ -1,5 +1,5 @@
 #include "RPN.hpp"
-#include <cstdlib>
+#include <cstdlib> // EXIT_*
 #include <iostream>
 
 int main(int argc, char *argv[]) {

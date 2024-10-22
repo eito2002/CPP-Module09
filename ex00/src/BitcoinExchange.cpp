@@ -1,5 +1,5 @@
 #include "BitcoinExchange.hpp"
-#include <cstdlib>
+#include <cstdlib> // std::atof
 #include <fstream>
 #include <iostream>
 #include <sstream>

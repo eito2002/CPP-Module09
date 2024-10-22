@@ -1,5 +1,5 @@
 #include "BitcoinExchange.hpp"
-#include <cstdlib>
+#include <cstdlib> // EXIT_*
 #include <fstream>
 #include <iostream>
 

@@ -1,5 +1,5 @@
 #include "RPN.hpp"
-#include <cstdlib>
+#include <cstdlib> // std::atoi
 #include <iostream>
 #include <limits>
 #include <sstream>
